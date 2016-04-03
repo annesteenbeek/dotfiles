@@ -7,7 +7,7 @@ source /opt/ros/indigo/setup.bash
 export TURTLEBOT_BASE=create
 export TURTLEBOT_STACKS=circles
 export TURTLEBOT_3D_sensor=kinect
-export TURTLEBOT_SERIAL_PORT=/dev/ttyUSB0
+export TURTLEBOT_SERIAL_PORT=/dev/ttyACM0
 
 export ROS_MASTER_URI=http://localhost:11311/
 export ROS_HOSTNAME=localhost
@@ -138,3 +138,4 @@ source '/home/anne/gcloud/google-cloud-sdk/path.bash.inc'
 
 # The next line enables shell command completion for gcloud.
 source '/home/anne/gcloud/google-cloud-sdk/completion.bash.inc'
+source ~/turtlebot/turtlebot/devel/setup.bash
