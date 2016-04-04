@@ -18,9 +18,14 @@ export TURTLEBOT_BASE=create
 export TURTLEBOT_STACKS=circles
 export TURTLEBOT_3D_sensor=kinect
 export TURTLEBOT_SERIAL_PORT=/dev/ttyACM0
+source ~/turtlebot/turtlebot/devel/setup.zsh
 
 export ROS_MASTER_URI=http://localhost:11311/
 export ROS_HOSTNAME=localhost
+
+# less color highlighting
+export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+export LESS=' -R '
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -64,7 +69,7 @@ export ROS_HOSTNAME=localhost
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colorize colored-man-pages command-not-found compleat)
+plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions)
 
 # User configuration
 
