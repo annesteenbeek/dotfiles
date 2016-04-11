@@ -9,7 +9,7 @@
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
 files="bashrc vimrc zshrc tmux.conf"    	  # list of files/folders to symlink in homedir
-packages="zsh tmux source-highlight"             # packages to be installed
+packages="zsh tmux source-highlight vim"             # packages to be installed
 
 ##########
 
@@ -43,7 +43,14 @@ install_omzsh () {
     if [[ ! -d ~/.oh-my-zsh/ ]]; then
         sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
     fi
+    # install zsh-autosuggestions
+    git clone git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+}
+
+disable_ubuntu_crap () {
+gsettings set com.canonical.Unity.Lenses disabled-scopes "['more_suggestions-amazon.scope', 'more_suggestions-u1ms.scope', 'more_suggestions-populartracks.scope', 'music-musicstore.scope', 'more_suggestions-ebay.scope', 'more_suggestions-ubuntushop.scope', 'more_suggestions-skimlinks.scope']"
 }
 
 install_packages
 install_omzsh
+disable_ubuntu_crap

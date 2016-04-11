@@ -9,23 +9,29 @@ ZSH_THEME="bira"
 plugins=(colorize colored-man-pages command-not-found compleat)
 # Personal additions
 alias sshServer='ssh anne@annesteenbeek.student.utwente.nl'
-
+alias sshNetbook='ssh anne@192.168.0.103'
 # zstyle ':completion:*' menu select # Do menu-driven completion.
 
 # ROS 
 source /opt/ros/indigo/setup.zsh
 export TURTLEBOT_BASE=create
 export TURTLEBOT_STACKS=circles
-export TURTLEBOT_3D_sensor=kinect
+export TURTLEBOT_3D_SENSOR=kinect
 export TURTLEBOT_SERIAL_PORT=/dev/ttyACM0
 source ~/turtlebot/turtlebot/devel/setup.zsh
 
-export ROS_MASTER_URI=http://localhost:11311/
-export ROS_HOSTNAME=localhost
+export ROS_MASTER_URI=http://192.168.0.103:11311/
+export ROS_HOSTNAME=192.168.0.105
+
+export GCC4MBED_DIR=/opt/gcc4mbed
+export ROS_LIB_DIR=~/ros-lib
 
 # less color highlighting
 export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 export LESS=' -R '
+
+# gcc4mbed path
+PATH=$PATH:/opt/gcc4mbed/gcc-arm-none-eabi/bin
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
