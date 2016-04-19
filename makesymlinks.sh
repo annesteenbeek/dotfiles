@@ -28,7 +28,7 @@ place_dotfiles() {
     # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks from the homedir to any files in the ~/dotfiles directory specified in $files
     for file in $files; do
         echo "Moving any existing dotfiles from ~ to $olddir"
-        mv ~/.$file ~/dotfiles_old/
+        mv --backup=numbered ~/.$file ~/dotfiles_old/
         echo "Creating symlink to $file in home directory."
         ln -s $dir/$file ~/.$file
     done
@@ -37,7 +37,7 @@ place_dotfiles() {
 install_packages () {
     for package in $packages; do
         echo "installing package: $package"
-        sudo apt-get install $package
+        sudo apt-get install -y $package
     done
 }
 
@@ -48,10 +48,15 @@ install_omzsh () {
     fi
     # install zsh-autosuggestions
     git clone git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    # install fasd
+    if [[ ! -d /usr/local/bin/fasd ]]; then
+      git clone https://github.com/clvv/fasd.git ~/Downloads/fasd
+      cd ~/Downloads/fasd/; sudo make install; cd ..; rm -rf fasd
+    fi
 }
 
 disable_ubuntu_crap () {
-gsettings set com.canonical.Unity.Lenses disabled-scopes "['more_suggestions-amazon.scope', 'more_suggestions-u1ms.scope', 'more_suggestions-populartracks.scope', 'music-musicstore.scope', 'more_suggestions-ebay.scope', 'more_suggestions-ubuntushop.scope', 'more_suggestions-skimlinks.scope']"
+  gsettings set com.canonical.Unity.Lenses disabled-scopes "['more_suggestions-amazon.scope', 'more_suggestions-u1ms.scope', 'more_suggestions-populartracks.scope', 'music-musicstore.scope', 'more_suggestions-ebay.scope', 'more_suggestions-ubuntushop.scope', 'more_suggestions-skimlinks.scope']"
 }
 
 install_packages

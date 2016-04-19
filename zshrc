@@ -6,7 +6,7 @@
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="bira"
-plugins=(colorize colored-man-pages command-not-found compleat)
+
 # Personal additions
 alias sshServer='ssh anne@annesteenbeek.student.utwente.nl'
 alias sshNetbook='ssh anne@192.168.0.103'
@@ -75,7 +75,7 @@ PATH=$PATH:/opt/gcc4mbed/gcc-arm-none-eabi/bin
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions)
+plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions wd fasd nyan)
 
 # User configuration
 
@@ -108,3 +108,4 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
