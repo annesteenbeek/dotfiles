@@ -9,7 +9,7 @@
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
 files="bashrc vimrc zshrc tmux.conf"    	  # list of files/folders to symlink in homedir
-packages="zsh tmux source-highlight vim"             # packages to be installed
+packages="zsh tmux make source-highlight vim"             # packages to be installed
 
 ##########
 
@@ -55,6 +55,13 @@ install_omzsh () {
     fi
 }
 
+install_vim_plugins () {
+  if [[ ! -d ~/.vim/bundle/Vundle.vim ]]; then
+          git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  fi
+  vim +PluginInstall +qall
+}
+
 disable_ubuntu_crap () {
   gsettings set com.canonical.Unity.Lenses disabled-scopes "['more_suggestions-amazon.scope', 'more_suggestions-u1ms.scope', 'more_suggestions-populartracks.scope', 'music-musicstore.scope', 'more_suggestions-ebay.scope', 'more_suggestions-ubuntushop.scope', 'more_suggestions-skimlinks.scope']"
 }
@@ -62,4 +69,5 @@ disable_ubuntu_crap () {
 install_packages
 install_omzsh
 disable_ubuntu_crap
+install_vim_plugins
 place_dotfiles

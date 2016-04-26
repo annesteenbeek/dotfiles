@@ -13,8 +13,7 @@ call vundle#begin()
  Plugin 'scrooloose/nerdtree.git'
  Plugin 'lrvick/Conque-Shell.git'
  Plugin 'christoomey/vim-tmux-navigator'
- Plugin 'bling/vim-airline'
- Plugin 'Valloric/YouCompleteMe'
+ " Plugin 'bling/vim-airline'
  Plugin 'terryma/vim-multiple-cursors'
 
  call vundle#end()
