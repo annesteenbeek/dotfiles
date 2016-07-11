@@ -1,0 +1,13 @@
+# ROS 
+source /opt/ros/indigo/setup.zsh
+export TURTLEBOT_BASE=create
+export TURTLEBOT_STACKS=circles
+export TURTLEBOT_3D_SENSOR=kinect
+export TURTLEBOT_SERIAL_PORT=/dev/ttyACM0
+source ~/turtlebot/turtlebot/devel/setup.zsh
+source /home/anne/catkin_ws/devel/setup.zsh
+export ROS_MASTER_URI=http://localhost:11311/
+#export ROS_MASTER_URI=http://192.168.0.104:11311/
+#export ROS_HOSTNAME=192.168.0.104
+export ROS_HOSTNAME=localhost
+

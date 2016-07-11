@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/anne/.oh-my-zsh
+export ZSH=/home/anne/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -10,28 +10,15 @@ ZSH_THEME="bira"
 # Personal additions
 alias sshServer='ssh anne@annesteenbeek.student.utwente.nl'
 alias sshNetbook='ssh anne@192.168.0.103'
+alias sshBackup='ssh anne@steenbeekthuis.ddns.net'
+
+# source all ros settings
+source ~/.rosrc
 # zstyle ':completion:*' menu select # Do menu-driven completion.
-
-# ROS 
-source /opt/ros/indigo/setup.zsh
-export TURTLEBOT_BASE=create
-export TURTLEBOT_STACKS=circles
-export TURTLEBOT_3D_SENSOR=kinect
-export TURTLEBOT_SERIAL_PORT=/dev/ttyACM0
-source ~/turtlebot/turtlebot/devel/setup.zsh
-
-export ROS_MASTER_URI=http://192.168.0.103:11311/
-export ROS_HOSTNAME=192.168.0.105
-
-export GCC4MBED_DIR=/opt/gcc4mbed
-export ROS_LIB_DIR=~/ros-lib
 
 # less color highlighting
 export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 export LESS=' -R '
-
-# gcc4mbed path
-PATH=$PATH:/opt/gcc4mbed/gcc-arm-none-eabi/bin
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -75,11 +62,11 @@ PATH=$PATH:/opt/gcc4mbed/gcc-arm-none-eabi/bin
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions wd fasd nyan)
+plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions wd fasd)
 
 # User configuration
 
-  export PATH="/home/anne/gcloud/google-cloud-sdk/bin:/home/anne/local/bin:/home/anne/.nvm/versions/node/v4.1.1/bin:/opt/ros/indigo/bin:/home/anne/gcloud/google-cloud-sdk/bin:/home/anne/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+  export PATH="/home/anne/local/bin:/home/anne/.nvm/versions/node/v4.1.1/bin:/opt/ros/indigo/bin:/home/anne/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
