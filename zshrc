@@ -12,13 +12,14 @@ alias sshServer='ssh anne@annesteenbeek.student.utwente.nl'
 alias sshNetbook='ssh anne@192.168.0.103'
 alias sshBackup='ssh anne@steenbeekthuis.ddns.net'
 
-# source all ros settings
-source ~/.rosrc
 # zstyle ':completion:*' menu select # Do menu-driven completion.
 
 # less color highlighting
 export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 export LESS=' -R '
+
+# set ranger default editor
+export EDITOR=vim ranger
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -70,6 +71,9 @@ plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosugge
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+
+# source all ros settings
+source ~/.rosrc
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8

@@ -21,8 +21,10 @@ call vundle#begin()
  Plugin 'majutsushi/tagbar'
  Plugin 'wincent/command-t'
  " Plugin 'airblade/vim-gitgutter'
+ Plugin 'tpope/vim-commentary'
  Plugin 'tpope/vim-fugitive'
  Plugin 'mhinz/vim-signify'
+ Plugin 'edkolev/tmuxline.vim'
 
  call vundle#end()
  syntax enable
@@ -38,6 +40,7 @@ call vundle#begin()
  set shiftround " always indent/outdent to the nerest tabstop
  set showcmd " sho command in bottom bar
  set cursorline " highlight current line
+ hi CursorLine term=bold cterm=bold guibg=Grey40 " make it so it's not underlined
  set wildmenu " visual autocomplete for command menu
  set lazyredraw " redraw only when needed
  set showmatch " highlight matchin [{()}]
