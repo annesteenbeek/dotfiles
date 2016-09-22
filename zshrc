@@ -21,6 +21,12 @@ export LESS=' -R '
 # set ranger default editor
 export EDITOR=vim ranger
 
+# force 256 color
+export TERM=screen-256color
+# export TERM=xterm-256color
+# make sure tmux is loaded correctly
+alias tmux="TERM=screen-256color-bce tmux"
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
