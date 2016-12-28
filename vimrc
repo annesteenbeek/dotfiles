@@ -15,7 +15,7 @@ call vundle#begin()
  Plugin 'christoomey/vim-tmux-navigator'
  Plugin 'vim-airline/vim-airline'
  Plugin 'vim-airline/vim-airline-themes'
-" Plugin 'Valloric/YouCompleteMe'
+ Plugin 'Valloric/YouCompleteMe'
  Plugin 'terryma/vim-multiple-cursors'
  Plugin 'michaeljsmith/vim-indent-object'
  Plugin 'majutsushi/tagbar'
@@ -28,6 +28,9 @@ call vundle#begin()
  Plugin 'sickill/vim-monokai'
  Plugin 'rcabralc/monokai-airline.vim'
  Plugin 'severin-lemaignan/vim-minimap'
+ Plugin 'tpope/vim-surround'
+ Plugin 'raimondi/delimitmate'
+
 
  call vundle#end()
  syntax enable
@@ -36,6 +39,7 @@ call vundle#begin()
  set t_Co=256 " enable 256-color mode
  set autoindent
  set tabstop=4 " tab spacing
+ set shiftwidth=4
  set ruler " always show info along bottom.
  set expandtab " use spaces instead of tabs
  set softtabstop=4 " unify
