@@ -2,18 +2,6 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# ROS variables
-source /opt/ros/indigo/setup.bash
-export TURTLEBOT_BASE=create
-export TURTLEBOT_STACKS=circles
-export TURTLEBOT_3D_sensor=kinect
-export TURTLEBOT_SERIAL_PORT=/dev/ttyACM0
-
-export ROS_MASTER_URI=http://localhost:11311/
-export ROS_HOSTNAME=localhost
-# export ROS_MASTER_URI=http://192.168.0.104:11311
-# export ROS_HOSTNAME=192.168.0.104 # IP of turtlebot
-
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -125,17 +113,4 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export NVM_DIR="/home/anne/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-export PATH=$HOME/local/bin:$PATH
-export NODE_PATH=/usr/lib/nodejs:/usr/lib/node_modules:/usr/share/javascript:/home/anne/.nvm/versions/node/v4.1.1/lib/node_modules
-
-# Aliasses
-alias sshServer='ssh anne@annesteenbeek.student.utwente.nl'
-
-# The next line updates PATH for the Google Cloud SDK.
-source '/home/anne/gcloud/google-cloud-sdk/path.bash.inc'
-
-# The next line enables shell command completion for gcloud.
-source '/home/anne/gcloud/google-cloud-sdk/completion.bash.inc'
-source ~/turtlebot/turtlebot/devel/setup.bash
+source ~/.rosrc
