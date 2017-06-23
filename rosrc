@@ -1,13 +1,22 @@
 # ROS 
 source /opt/ros/indigo/setup.zsh
-export TURTLEBOT_BASE=create
-export TURTLEBOT_STACKS=circles
-export TURTLEBOT_3D_SENSOR=kinect
-export TURTLEBOT_SERIAL_PORT=/dev/ttyACM0
-source ~/turtlebot/turtlebot/devel/setup.zsh
 source /home/anne/catkin_ws/devel/setup.zsh
-export ROS_MASTER_URI=http://localhost:11311/
-#export ROS_MASTER_URI=http://192.168.0.104:11311/
-#export ROS_HOSTNAME=192.168.0.104
-export ROS_HOSTNAME=localhost
+source /home/anne/catkin_ws/install/setup.zsh
 
+# PX4
+px4_dir=/home/anne/catkin_ws/src/px4_firmware
+source $px4_dir/Tools/setup_gazebo.bash $px4_dir $px4_dir/build_posix_sitl_default
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$px4_dir
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$px4_dir/Tools/sitl_gazebo
+
+# Ardupilot
+export PATH=$PATH:$HOME/src/ardupilot/Tools/autotest
+export PATH=/usr/lib/ccache:$PATH
+
+
+export ROS_MASTER_URI=http://localhost:11311/
+export ROS_HOSTNAME=localhost
+# export ROS_MASTER_URI=http://192.168.1.183:11311/
+# export ROS_HOSTNAME=192.168.1.230
+# export ROS_MASTER_URI=http://172.24.1.1:11311/
+# export ROS_HOSTNAME=172.24.1.80

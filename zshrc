@@ -47,8 +47,6 @@ source $ZSH/oh-my-zsh.sh
 # source all ros settings
 source ~/.rosrc
 
-
-
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
