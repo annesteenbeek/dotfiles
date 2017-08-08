@@ -13,6 +13,23 @@ packages="zsh tmux source-highlight vim-gnome"             # packages to be inst
 
 ##########
 
+#TODO select different package manager depending on distro
+#TODO add functionality for adding ppa's
+#TODO select to either link or overwrite dotfiles
+#TODO add rosinstall component (x86, arm, indigo, kinetic)
+#TODO don't start zsh after installation
+#TODO allow for different users (now /home/anne is baked in
+#TODO add airline colors
+
+##########
+# Dialog
+# -. Select packages to install -> store this list, (add optional extra packages that are not selected by default)
+# -. Should dotfiles be linked or placed -> store choice
+# -. Select dotfiles to be placed
+# -. if vim is selected, allow for removal of certain plugins
+# -. 
+#########
+
 place_dotfiles() {
     # create dotfiles_old in homedir
     echo -n "Creating $olddir for backup of any existing dotfiles in ~ ..."
@@ -60,14 +77,25 @@ install_vim_plugins () {
           git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
   fi
   vim +PluginInstall +qall
+  # TODO install vim plugins, mainly command T, which requires ruby make
+  # TODO also install code formaters, pylint
 }
 
 disable_ubuntu_crap () {
   gsettings set com.canonical.Unity.Lenses disabled-scopes "['more_suggestions-amazon.scope', 'more_suggestions-u1ms.scope', 'more_suggestions-populartracks.scope', 'music-musicstore.scope', 'more_suggestions-ebay.scope', 'more_suggestions-ubuntushop.scope', 'more_suggestions-skimlinks.scope']"
 }
 
+set_locale () {
+    export LANGUAGE=en_US.UTF-8
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+    export LC_CTYPE="en_US.UTF-8"
+    locale-gen en_US.UTF-8
+    sudo dpkg-reconfigure locales
+}
+
 install_packages
 install_omzsh
-disable_ubuntu_crap
+# disable_ubuntu_crap
 install_vim_plugins
 place_dotfiles

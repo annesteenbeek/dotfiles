@@ -1,7 +1,9 @@
 # ROS 
 source /opt/ros/indigo/setup.zsh
 source /home/anne/catkin_ws/devel/setup.zsh
-source /home/anne/catkin_ws/install/setup.zsh
+
+# Python path for linter
+export PYTHONPATH=$PYTHONPATH:/home/anne/catkin_ws/devel/:/home/anne/catkin_ws/src/
 
 # PX4
 px4_dir=/home/anne/catkin_ws/src/px4_firmware
@@ -12,6 +14,9 @@ export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$px4_dir/Tools/sitl_gazebo
 # Ardupilot
 export PATH=$PATH:$HOME/src/ardupilot/Tools/autotest
 export PATH=/usr/lib/ccache:$PATH
+# gcc-arm cross compiler for uploading ardupilot
+export PATH=/opt/gcc-arm-none-eabi-4_9-2015q3/bin:$PATH
+# alias arm-none-eabi-gcc='/opt/gcc-arm-none-eabi-4_9-2015q3/bin/arm-none-eabi-gcc'
 
 
 export ROS_MASTER_URI=http://localhost:11311/

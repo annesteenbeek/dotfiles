@@ -1,17 +1,17 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/anne/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
 ZSH_THEME="bira"
+
 
 # Personal additions
 alias sshServer='ssh anne@annesteenbeek.student.utwente.nl'
 alias sshNetbook='ssh anne@192.168.0.103'
 alias sshBackup='ssh anne@steenbeekthuis.ddns.net'
+alias vpnServer='sudo openvpn ~/.vpn/ubuntuLaptop.ovpn'
 
+alias clc='clear'
+alias dirs='dirs -v'
 # zstyle ':completion:*' menu select # Do menu-driven completion.
 
 # less color highlighting
@@ -72,11 +72,13 @@ alias tmux="TERM=screen-256color-bce tmux"
 plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions wd fasd)
 
 # User configuration
-
-  export PATH="/home/anne/local/bin:/home/anne/.nvm/versions/node/v4.1.1/bin:/opt/ros/indigo/bin:/home/anne/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+export PATH="usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+
+# Modify prompt to show background jobs
+export PROMPT="$(echo $PROMPT | sed 's/\@\%[m]\%{\$reset_color\%}./&%(1j.[%j].)/')"
 
 # source all ros settings
 source ~/.rosrc
