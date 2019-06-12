@@ -3,23 +3,25 @@
 # .make.sh
 # This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
 ############################
-
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ########## Variables
 
-dir=~/dotfiles                    # dotfiles directory
-olddir=~/dotfiles_old             # old dotfiles backup directory
+olddir="$DIR/dotfiles_old"             # old dotfiles backup directory
 files="bashrc vimrc zshrc tmux.conf rosrc"    	  # list of files/folders to symlink in homedir
 packages="zsh tmux source-highlight vim-gnome"             # packages to be installed
 
 ##########
 
-#TODO select different package manager depending on distro
 #TODO add functionality for adding ppa's
 #TODO select to either link or overwrite dotfiles
-#TODO add rosinstall component (x86, arm, indigo, kinetic)
 #TODO don't start zsh after installation
 #TODO allow for different users (now /home/anne is baked in
 #TODO add airline colors
+
+
+# MORE RECENT
+# TODO setup tmux plugin manager installation
+# TODO add xclip
 
 ##########
 # Dialog
@@ -32,23 +34,17 @@ packages="zsh tmux source-highlight vim-gnome"             # packages to be inst
 
 place_dotfiles() {
     # create dotfiles_old in homedir
-    echo -n "Creating $olddir for backup of any existing dotfiles in ~ ..."
     mkdir -p $olddir
-    echo "done"
 
-
-    # change to the dotfiles directory
-    echo -n "Changing to the $dir directory ..."
-    cd $dir
-    echo "done"
-
+    pushd $DIR
     # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks from the homedir to any files in the ~/dotfiles directory specified in $files
     for file in $files; do
-        echo "Moving any existing dotfiles from ~ to $olddir"
-        mv --backup=numbered ~/.$file ~/dotfiles_old/
+        echo "Moving any existing dotfiles from ~ to $OLDDIR"
+        mv --backup=numbered ~/.$file $OLDDIR
         echo "Creating symlink to $file in home directory."
-        ln -s $dir/$file ~/.$file
+        ln -s $DIR/$file ~/.$file
     done
+    popd
 }
 
 install_packages () {
@@ -59,16 +55,24 @@ install_packages () {
 }
 
 install_omzsh () {
+    echo "setting up Oh-My-ZSH"
     # install my oh-my-zsh repository from GitHub only if it isn't already present
     if [[ ! -d ~/.oh-my-zsh/ ]]; then
-        sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+        wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh 
     fi
+
     # install zsh-autosuggestions
-    git clone git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    AUTO_DIR="~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    if [[ ! -d $AUTO_DIR ]]; then
+        git clone git://github.com/zsh-users/zsh-autosuggestions $AUTO_DIR
+    fi
+
     # install fasd
     if [[ ! -d /usr/local/bin/fasd ]]; then
-      git clone https://github.com/clvv/fasd.git ~/Downloads/fasd
-      cd ~/Downloads/fasd/; sudo make install; cd ..; rm -rf fasd
+      git clone https://github.com/clvv/fasd.git /tmp/fasd
+      pushd /tmp/fasd
+      sudo make install
+      mkdir ~/.fasd # create fasd history storage folder
     fi
 }
 
@@ -85,6 +89,20 @@ disable_ubuntu_crap () {
   gsettings set com.canonical.Unity.Lenses disabled-scopes "['more_suggestions-amazon.scope', 'more_suggestions-u1ms.scope', 'more_suggestions-populartracks.scope', 'music-musicstore.scope', 'more_suggestions-ebay.scope', 'more_suggestions-ubuntushop.scope', 'more_suggestions-skimlinks.scope']"
 }
 
+install_fzf () {
+    if [ ! -d ~/.fzf ]; then
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        ~/.fzf/install
+    fi
+}
+
+setup_tmux_plugins () {
+    if [ ! -d  ~/.tmux/plugins/tpm ]; then
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    fi
+    bash ~/.tmux/plugins/tpm/scripts/install_plugins.sh
+}
+
 set_locale () {
     export LANGUAGE=en_US.UTF-8
     export LANG=en_US.UTF-8
@@ -99,3 +117,5 @@ install_omzsh
 # disable_ubuntu_crap
 install_vim_plugins
 place_dotfiles
+install_fzf
+setup_tmux_plugins

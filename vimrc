@@ -12,28 +12,29 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'lrvick/Conque-Shell'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'rcabralc/monokai-airline.vim'
+" Plugin 'edkolev/tmuxline.vim'
 " Plugin 'Valloric/YouCompleteMe'
 Plugin 'davidhalter/jedi-vim' " autocomplete
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'michaeljsmith/vim-indent-object' " Indent whole blocks
-Plugin 'majutsushi/tagbar'
 " Plugin 'wincent/command-t'
-" Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'edkolev/tmuxline.vim'
 Plugin 'sickill/vim-monokai'
-Plugin 'rcabralc/monokai-airline.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'raimondi/delimitmate'
 Plugin 'w0rp/ale' " Syntax linting
 Plugin 'kshenoy/vim-signature' " shows nav marks in the gutter
-Plugin 'kien/ctrlp.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'gasparch/ctrlp-tagbar.vim'
+Plugin 'lervag/vimtex' " latex tooling
 " Plugin 'python-mode/python-mode' " Python specific plugin
+Plugin 'chrisbra/csv.vim' " CSV formatting
 
 
 call vundle#end()
@@ -60,15 +61,25 @@ set pastetoggle=<F2> " Toggle pasting mode
 set clipboard=unnamed " copy and paste to system clipboard
 
 
+" ----------- ctrl-p ------------
+" set tags+=tags
+let g:ctrlp_extensions = ['tag']
+
 " ----------- Colors and gutter settings --------
 set t_Co=256 " enable 256-color mode
 colorscheme monokai
+
 let g:airline_powerline_fonts = 1
 let g:airline_theme='monokai' 
 let g:airline#extensions#branch#enabled = 1
-set laststatus=2
-set colorcolumn=80 " Column width
-highlight ColorColumn ctermbg=234
+let g:airline#extensions#tabline#enabled = 1
+
+" ------ Powerline -----
+" set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+
+" set laststatus=2
+" set colorcolumn=80 " Column width
+" highlight ColorColumn ctermbg=234
  
 let g:ale_sign_error = '⨉'
 let g:ale_sign_warning = '⚠'
@@ -92,6 +103,10 @@ let g:jedi#goto_command = "<leader>g"
 map <Leader>d <esc>:NERDTreeToggle<CR>  " Nerdtree toggling
 nmap <Leader>t <esc>:TagbarToggle<CR> " Toggle tagbar
 
+" NERDCommenter toggle 
+nmap <C-_>   <Plug>NERDCommenterToggle
+vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
+
 map <Leader>n <esc>:tabnext<CR>
 map <Leader>m <esc>:tabprevious<CR>
 
@@ -112,8 +127,6 @@ vnoremap > >gv
 " Column wrapping to fit 
 vmap Q gq
 nmap Q gqap
-
-
 
 " --------- Plugin settings --------
 " Nerdtree
@@ -150,3 +163,11 @@ set foldmethod=indent
 set foldnestmax=10
 set nofoldenable
 set foldlevel=2
+
+" ------ Vimtex ------
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
+
