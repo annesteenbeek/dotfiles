@@ -6,9 +6,9 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ########## Variables
 
-olddir="$DIR/dotfiles_old"             # old dotfiles backup directory
+OLDDIR="$DIR/dotfiles_old"             # old dotfiles backup directory
 files="bashrc vimrc zshrc tmux.conf rosrc"    	  # list of files/folders to symlink in homedir
-packages="zsh tmux source-highlight vim-gnome"             # packages to be installed
+packages="zsh tmux source-highlight vim-gnome build-essential"             # packages to be installed
 
 ##########
 
@@ -19,8 +19,6 @@ packages="zsh tmux source-highlight vim-gnome"             # packages to be inst
 #TODO add airline colors
 
 
-# MORE RECENT
-# TODO setup tmux plugin manager installation
 # TODO add xclip
 
 ##########
@@ -34,20 +32,25 @@ packages="zsh tmux source-highlight vim-gnome"             # packages to be inst
 
 place_dotfiles() {
     # create dotfiles_old in homedir
-    mkdir -p $olddir
+    mkdir -p $OLDDIR
 
     pushd $DIR
     # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks from the homedir to any files in the ~/dotfiles directory specified in $files
     for file in $files; do
-        echo "Moving any existing dotfiles from ~ to $OLDDIR"
-        mv --backup=numbered ~/.$file $OLDDIR
-        echo "Creating symlink to $file in home directory."
-        ln -s $DIR/$file ~/.$file
+        if [ -f $DIR/$file ]; then # check if file exists and is not symlink
+            echo "Moving $file from ~ to $OLDDIR"
+            mv --backup=numbered ~/.$file $OLDDIR
+            echo "Creating symlink to $file in home directory."
+            ln -s $DIR/$file ~/.$file
+        else
+            echo "File $file is symlink, doing nothing"
+        fi
     done
     popd
 }
 
 install_packages () {
+    sudo apt-get update
     for package in $packages; do
         echo "installing package: $package"
         sudo apt-get install -y $package
@@ -62,18 +65,19 @@ install_omzsh () {
     fi
 
     # install zsh-autosuggestions
-    AUTO_DIR="~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    AUTO_DIR="$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
     if [[ ! -d $AUTO_DIR ]]; then
-        git clone git://github.com/zsh-users/zsh-autosuggestions $AUTO_DIR
+        git clone https://github.com/zsh-users/zsh-autosuggestions.git $AUTO_DIR
     fi
 
     # install fasd
-    if [[ ! -d /usr/local/bin/fasd ]]; then
-      git clone https://github.com/clvv/fasd.git /tmp/fasd
-      pushd /tmp/fasd
-      sudo make install
-      mkdir ~/.fasd # create fasd history storage folder
+    if [[ ! -d "/tmp/fasd" ]]; then
+        git clone https://github.com/clvv/fasd.git /tmp/fasd
     fi
+    pushd /tmp/fasd
+    PREFIX=$HOME/.local make install
+    mkdir -p ~/.fasd # create fasd history storage folder
+    popd
 }
 
 install_vim_plugins () {
@@ -112,10 +116,17 @@ set_locale () {
     sudo dpkg-reconfigure locales
 }
 
+install_patched_fonts () {
+    git clone https://github.com/powerline/fonts.git /tmp/fonts --depth=1
+    pushd /tmp/fonts
+    ./install.sh
+    popd
+}
+
 install_packages
 install_omzsh
-# disable_ubuntu_crap
-install_vim_plugins
-place_dotfiles
 install_fzf
+place_dotfiles
+install_vim_plugins
 setup_tmux_plugins
+install_patched_fonts
