@@ -17,6 +17,7 @@ packages="zsh tmux source-highlight vim-gnome build-essential"             # pac
 #TODO don't start zsh after installation
 #TODO allow for different users (now /home/anne is baked in
 #TODO add airline colors
+#TODO Also backup .conf folder?
 
 
 # TODO add xclip
@@ -78,6 +79,14 @@ install_omzsh () {
     PREFIX=$HOME/.local make install
     mkdir -p ~/.fasd # create fasd history storage folder
     popd
+
+    # Install zsh autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+    # Setup spaceship prompt
+    git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
+    ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+
 }
 
 install_vim_plugins () {

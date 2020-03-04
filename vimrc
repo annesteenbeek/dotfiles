@@ -80,6 +80,7 @@ let g:airline#extensions#tabline#enabled = 1
 " set laststatus=2
 " set colorcolumn=80 " Column width
 " highlight ColorColumn ctermbg=234
+let g:ale_echo_cursor = 0 " prevent hiding cursor
  
 let g:ale_sign_error = '⨉'
 let g:ale_sign_warning = '⚠'

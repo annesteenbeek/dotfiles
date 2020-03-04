@@ -1,26 +1,24 @@
 # ROS 
-source /opt/ros/kinetic/setup.zsh
+source /opt/ros/melodic/setup.zsh
+
 # source /home/anne/catkin_ws/devel/setup.zsh
 source /home/anne/tello_ws/devel/setup.zsh
+# source /home/anne/catkin_tmp/devel/setup.zsh
+
+export CMAKE_PREFIX_PATH="/home/anne/catkin_tmp/cget:$CMAKE_PREFIX_PATH"
+
+WORKSPACE="/home/anne/catkin_tmp/cget"
+export PATH="$WORKSPACE/bin:$PATH"
+export LD_LIBRARY_PATH="$WORKSPACE/lib:$LD_LIBRARY_PATH"
+export C_INCLUDE_PATH="$WORKSPACE/include:$C_INCLUDE_PATH"
+export CPLUS_INCLUDE_PATH="$WORKSPACE/include:$CPLUS_INCLUDE_PATH"
 
 # flame_ros dependency info
 # source /home/anne/tello_ws/dependencies/env.sh
 
-# Naoqi python SDK
-# export PYTHONPATH=$PYTHONPATH:/home/anne/welbo/workdir/naoqi/pynaoqi-python2.7-2.5.7.1-linux64/lib/python2.7/site-packages
-
-
-# Python path for linter
-# export PYTHONPATH=$PYTHONPATH:/home/anne/catkin_ws/devel/:/home/anne/catkin_ws/src/
-
-# MY_IP=192.168.1.106
-# MY_IP=10.42.0.1
 MY_IP=localhost
-NAO_IP=192.168.1.103
-# NAO_IP=10.42.0.193
-# NAO_IP=10.42.0.131
+# MY_IP=192.168.178.36
 
-export NAO_IP=$NAO_IP
 export MY_IP=$MY_IP
 
 MASTER_IP=$MY_IP

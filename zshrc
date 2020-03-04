@@ -1,7 +1,19 @@
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
-ZSH_THEME="bira"
+# ZSH_THEME="bira"
+ZSH_THEME="spaceship"
+# Spaceship settings
+# SPACESHIP_CHAR_SYMBOL="$ "
+SPACESHIP_DIR_TRUNC=5
+SPACESHIP_DIR_TRUNC_PREFIX="…/"
+SPACESHIP_DIR_TRUNC_REPO="false"
+# SPACESHIP_GIT_PREFIX=" "
+# SPACESHIP_GIT_SUFFIX=" "
+SPACESHIP_VENV_SYMBOL="🐍·"
+SPACESHIP_EXIT_CODE_SHOW="true"
+SPACESHIP_EXIT_CODE_SYMBOL=""
+
 
 zstyle ':completion:*' menu select # Do menu-driven completion.
 
@@ -39,10 +51,13 @@ DISABLE_AUTO_UPDATE="true"
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
 
-plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions wd fasd)
+plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions wd fasd zsh-syntax-highlighting git-prompt)
 
 # Set color of autosuggestion in 256 color style to match background
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+
+# initialize fasd
+eval "$(fasd --init auto)"
 
 # User configuration
 export PATH="usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -50,8 +65,11 @@ export PATH="usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 source $ZSH/oh-my-zsh.sh
 
+# disable pasted text highlighting
+zle_highlight+=(paste:none)
+
 # Modify prompt to show background jobs
-export PROMPT="$(echo $PROMPT | sed 's/\@\%[m]\%{\$reset_color\%}./&%(1j.[%j].)/')"
+# export PROMPT="$(echo $PROMPT | sed 's/\@\%[m]\%{\$reset_color\%}./&%(1j.[%j].)/')"
 
 # export PATH="/opt/anaconda2/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
@@ -72,8 +90,19 @@ export PATH="$HOME/.npm-packages/bin:$PATH"
 #   export EDITOR='mvim'
 # fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+
+# use ctrl+o to navigate directories in ranger
+function ranger-cd {
+    tempfile="$(mktemp -t tmp.XXXXXX)"
+    /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    test -f "$tempfile" &&
+    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+        cd -- "$(cat "$tempfile")"
+    fi  
+    rm -f -- "$tempfile"
+}
+
+bindkey -s '^O' 'ranger-cd\n'
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
@@ -82,27 +111,27 @@ export PATH="$HOME/.npm-packages/bin:$PATH"
 export PATH="/usr/local/cuda/bin:$PATH"
 export MANPATH=/usr/local/cuda/man:${MANPATH}
 
-# add cuda libraries to library path
-# if [[ "${LD_LIBRARY_PATH}" != "" ]]
-# then
-  # export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
-# else
-  # export LD_LIBRARY_PATH=/usr/local/cuda/lib64
-# fi
+# rust cargo to path
+export PATH="/home/$USER/.cargo/bin:$PATH"
 
-# source ~/.rosrc
+source ~/.rosrc
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPS="--extended"
 # export FZF_DEFAULT_COMMAND="fd --type f"
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+setopt HIST_IGNORE_ALL_DUPS
 
-# Personal additions
-# alias sshServer='ssh anne@annesteenbeek.student.utwente.nl'
-# alias sshBackup='ssh anne@steenbeekthuis.ddns.net'
+# Use android studio adb if available
+if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
+    alias adb="$HOME/Android/Sdk/platform-tools/adb" 
+fi
 
 alias clc='clear'
 alias dirs='dirs -v'
 alias d='dirs -v'
 alias tree='tree -L 3 --filelimit 20 -h'
+alias c='fasd -e code -d'
 
+
+source /home/anne/.config/broot/launcher/bash/br
