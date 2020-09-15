@@ -118,3 +118,5 @@ fi
 # added by Anaconda2 4.4.0 installer
 # export PATH="/opt/anaconda2/bin:$PATH"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+source /home/anne/.config/broot/launcher/bash/br

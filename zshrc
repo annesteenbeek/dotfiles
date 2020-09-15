@@ -114,7 +114,7 @@ export MANPATH=/usr/local/cuda/man:${MANPATH}
 # rust cargo to path
 export PATH="/home/$USER/.cargo/bin:$PATH"
 
-source ~/.rosrc
+# source ~/.rosrc
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPS="--extended"
@@ -135,3 +135,22 @@ alias c='fasd -e code -d'
 
 
 source /home/anne/.config/broot/launcher/bash/br
+
+# Freqtrade TA
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+# # >>> conda initialize >>>
+# # !! Contents within this block are managed by 'conda init' !!
+# __conda_setup="$('/home/anne/.local/share/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+    # eval "$__conda_setup"
+# else
+    # if [ -f "/home/anne/.local/share/miniconda3/etc/profile.d/conda.sh" ]; then
+        # . "/home/anne/.local/share/miniconda3/etc/profile.d/conda.sh"
+    # else
+        # export PATH="/home/anne/.local/share/miniconda3/bin:$PATH"
+    # fi
+# fi
+# unset __conda_setup
+# # <<< conda initialize <<<
+
