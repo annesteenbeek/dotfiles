@@ -7,10 +7,17 @@
 - name: Install tpm
   git: 
     repo: https://github.com/tmux-plugins/tpm
-    dest: "{{dotfiles_user_home}}/.tmux/plugins/tmp"
+    dest: "~/.tmux/plugins/tmp"
+  script: "~/.tmux/plugins/tmp/scripts/install_plugins.sh"
 
 - name: Link tmux.conf
     file:
       src: "tmux.conf"
       dest: "~/.tmux.conf"
       state: link
+      backup: yes
+    register: result 
+
+- name: Move backup
+  shell: mkdir -p {{ backup_dir }}; mv {{ result.backup }} {{ backup_dir }}
+  when: result.backup
