@@ -1,0 +1,16 @@
+---
+
+- name: Install tmux apt
+  apt: name=tmux state=present
+  become_method: sudo
+
+- name: Install tpm
+  git: 
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{dotfiles_user_home}}/.tmux/plugins/tmp"
+
+- name: Link tmux.conf
+    file:
+      src: "tmux.conf"
+      dest: "~/.tmux.conf"
+      state: link
