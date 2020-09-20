@@ -1,0 +1,38 @@
+---
+
+- name: Install zsh
+  apt: name=zsh 
+  become_method: sudo
+
+- name: Link .zshrc
+  file:
+    src: "{{ playbook_dir }}/roles/zsh/files/zshrc"
+    dest: "~/.zshrc"
+    state: link
+
+- name: Cloning oh-my-zsh
+  git:
+    repo=https://github.com/robbyrussell/oh-my-zsh
+    dest=~/.oh-my-zsh
+  when: not stat_oh_my_zsh_result.stat.exists
+
+- name: Setup zsh autosuggestions
+  git:
+    repo="https://github.com/zsh-users/zsh-autosuggestions"
+    dest="~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+
+- name: Set spaceship prompt
+  git: 
+    repo="https://github.com/denysdovhan/spaceship-prompt"
+    dest="~/.oh-my-zsh/custom/themes/spaceship-prompt"
+    depth=1
+
+- name: Link spaceship prompt
+  file:
+    src: "~/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
+    dest: "~/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+    state: link
+
+- name: Set default shell
+  user: shell=/usr/bin/zsh
+  sudo: yes

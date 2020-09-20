@@ -1,7 +1,7 @@
 ---
 
 - name: Install tmux apt
-  apt: name=tmux state=present
+  apt: name=tmux
   become_method: sudo
 
 - name: Link tmux.conf
