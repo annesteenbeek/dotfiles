@@ -8,6 +8,8 @@
   git: 
     repo: https://github.com/tmux-plugins/tpm
     dest: "~/.tmux/plugins/tmp"
+
+- name: Install plugins
   shell: "~/.tmux/plugins/tmp/scripts/install_plugins.sh"
 
 - name: Link tmux.conf
