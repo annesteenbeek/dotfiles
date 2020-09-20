@@ -4,6 +4,12 @@
   apt: name=tmux state=present
   become_method: sudo
 
+- name: Link tmux.conf
+  file:
+    src: "tmux.conf"
+    dest: "~/.tmux.conf"
+    state: link
+
 - name: Install tpm
   git: 
     repo: https://github.com/tmux-plugins/tpm
@@ -12,8 +18,3 @@
 - name: Install plugins
   shell: "~/.tmux/plugins/tmp/scripts/install_plugins.sh"
 
-- name: Link tmux.conf
-  file:
-    src: "tmux.conf"
-    dest: "~/.tmux.conf"
-    state: link
