@@ -6,7 +6,7 @@
 
 - name: Link tmux.conf
   file:
-    src: "tmux.conf"
+    src: "{{ playbook_dir }}/roles/tmux/files/tmux.conf"
     dest: "~/.tmux.conf"
     state: link
 
