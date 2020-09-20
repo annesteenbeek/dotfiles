@@ -13,8 +13,8 @@
 - name: Install tpm
   git: 
     repo: https://github.com/tmux-plugins/tpm
-    dest: "~/.tmux/plugins/tmp"
+    dest: "~/.tmux/plugins/tpm"
 
 - name: Install plugins
-  shell: "~/.tmux/plugins/tmp/scripts/install_plugins.sh"
+  shell: "~/.tmux/plugins/tpm/scripts/install_plugins.sh"
 
