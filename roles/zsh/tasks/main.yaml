@@ -35,4 +35,3 @@
 
 - name: Set default shell
   user: shell=/usr/bin/zsh
-  sudo: yes
