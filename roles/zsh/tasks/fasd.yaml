@@ -1,0 +1,18 @@
+---
+
+- name: Download fasd
+  git:
+    repo="https://github.com/clvv/fasd"
+    dest=/tmp/fasd
+
+- name: Create fasd dir
+    file:
+      path: ~/.fasd
+      state: directory
+
+- name: Make fasd
+  - make:
+    chdir: /tmp/fasd
+    target: install
+    params:
+      PREFIX: $HOME/.local

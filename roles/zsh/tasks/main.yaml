@@ -14,7 +14,6 @@
   git:
     repo=https://github.com/robbyrussell/oh-my-zsh
     dest=~/.oh-my-zsh
-  when: not stat_oh_my_zsh_result.stat.exists
 
 - name: Setup zsh autosuggestions
   git:
@@ -33,5 +32,15 @@
     dest: "~/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
     state: link
 
+- name: Get fzf
+  git:
+    repo: "https://github.com/junegunn/fzf.git"
+    dest: "~/.fzf"
+
+# Fasd
+- import_tasks: fasd.yaml
+
 - name: Set default shell
-  user: shell=/usr/bin/zsh
+  user: 
+    name: "{{ ansible_user }}"
+    shell: /usr/bin/zsh
