@@ -1,6 +1,7 @@
 - name: Set up local development environment
   hosts: local
   roles:
+    - {role: packages}
     - {role: tmux}
     - {role: zsh}
     # # Tag each role so that we can select individual roles to run with ansible-playbook --tags

@@ -6,12 +6,12 @@
     dest=/tmp/fasd
 
 - name: Create fasd dir
-    file:
-      path: ~/.fasd
-      state: directory
+  file:
+    path: ~/.fasd
+    state: directory
 
 - name: Make fasd
-  - make:
+  make:
     chdir: /tmp/fasd
     target: install
     params:

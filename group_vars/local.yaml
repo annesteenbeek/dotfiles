@@ -1,1 +1,5 @@
 backup_dir: "~/.dotfiles_backup"
+
+packages_to_install: 
+  - make
+  - build-essential
