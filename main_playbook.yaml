@@ -1,6 +1,7 @@
 - name: Set up local development environment
   hosts: local
   roles:
+    - {role: common}
     - {role: packages}
     - {role: tmux}
     - {role: zsh}
