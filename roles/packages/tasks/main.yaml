@@ -1,7 +1,7 @@
 ---
 
 - debug:
-  var: packages_to_install
+    var: packages_to_install
 
 - name: "Install packages"
   apt:

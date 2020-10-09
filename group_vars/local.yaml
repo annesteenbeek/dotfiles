@@ -5,6 +5,7 @@ config_system_language: 'en_US.UTF-8'
 
 packages_to_install: 
   - make
+  - locale
   - build-essential
   - htop
   - ranger 
