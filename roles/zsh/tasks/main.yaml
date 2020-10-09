@@ -20,6 +20,11 @@
     repo="https://github.com/zsh-users/zsh-autosuggestions"
     dest="~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 
+- name: Setup zsh syntax highlighting
+  git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting"
+    dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighitng"
+
 - name: Set spaceship prompt
   git: 
     repo="https://github.com/denysdovhan/spaceship-prompt"
@@ -39,6 +44,7 @@
 
 # Fasd
 - import_tasks: fasd.yaml
+- import_tasks: patched_fonts.yaml # should only have to be done on GUI
 
 - name: Set default shell
   user: 

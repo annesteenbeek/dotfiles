@@ -1,5 +1,8 @@
 ---
 
+- debug:
+  var: packages_to_install
+
 - name: "Install packages"
   apt:
     update-cache: yes
