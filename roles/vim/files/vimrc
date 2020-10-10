@@ -2,42 +2,36 @@ set nocompatible              " be iMproved, required
 filetype off                  " required  
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-  
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin()
+Plug 'VundleVim/Vundle.vim'
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'rcabralc/monokai-airline.vim'
-" Plugin 'edkolev/tmuxline.vim'
-" Plugin 'Valloric/YouCompleteMe'
-Plugin 'davidhalter/jedi-vim' " autocomplete
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'michaeljsmith/vim-indent-object' " Indent whole blocks
-" Plugin 'wincent/command-t'
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'sickill/vim-monokai'
-Plugin 'tpope/vim-surround'
-Plugin 'raimondi/delimitmate'
-Plugin 'w0rp/ale' " Syntax linting
-Plugin 'kshenoy/vim-signature' " shows nav marks in the gutter
-Plugin 'majutsushi/tagbar'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'gasparch/ctrlp-tagbar.vim'
-Plugin 'lervag/vimtex' " latex tooling
-" Plugin 'python-mode/python-mode' " Python specific plugin
-Plugin 'chrisbra/csv.vim' " CSV formatting
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'rcabralc/monokai-airline.vim'
+" Plug 'edkolev/tmuxline.vim'
+" Plug 'Valloric/YouCompleteMe'
+Plug 'davidhalter/jedi-vim' " autocomplete
+Plug 'terryma/vim-multiple-cursors'
+Plug 'michaeljsmith/vim-indent-object' " Indent whole blocks
+" Plug 'wincent/command-t'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'sickill/vim-monokai'
+Plug 'tpope/vim-surround'
+Plug 'raimondi/delimitmate'
+Plug 'w0rp/ale' " Syntax linting
+Plug 'kshenoy/vim-signature' " shows nav marks in the gutter
+Plug 'majutsushi/tagbar'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'gasparch/ctrlp-tagbar.vim'
+Plug 'lervag/vimtex' " latex tooling
+" Plug 'python-mode/python-mode' " Python specific plugin
+Plug 'chrisbra/csv.vim' " CSV formatting
+call plug#end()
 
-
-call vundle#end()
 syntax enable
 set number
 filetype plugin indent on
