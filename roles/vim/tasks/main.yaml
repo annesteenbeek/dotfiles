@@ -4,6 +4,11 @@
   apt: name=vim
   become_method: sudo
 
+- name: Create autoload dir
+  file:
+    path: "~/.vim/autoload" 
+    state: directory
+
 - name: Install vim-plug
   get_url:
     url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
