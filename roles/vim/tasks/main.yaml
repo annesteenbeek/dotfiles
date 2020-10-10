@@ -22,4 +22,3 @@
 
 - name: Install plugins
   command: vim +PlugInstall +qall
-  when: vim_install_plugins|bool

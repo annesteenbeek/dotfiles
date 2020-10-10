@@ -1,8 +1,17 @@
 source ~/.antigen/antigen.zsh
 
 antigen use oh-my-zsh
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-syntax-highlighting
+antigen bundle zsh-autosuggestions
+antigen bundle git
+antigen bundle colorize 
+antigen bundle colored-man-pages
+antigen bundle command-not-found
+antigen bundle compleat
+antigen bundle fasd
+antigen bundle fzf
+antigen bundle git-prompt
+
 antigen theme denysdovhan/spaceship-prompt
 antigen apply
 
@@ -24,35 +33,16 @@ zstyle ':completion:*' menu select
 
 # set ranger default editor
 export EDITOR=vim ranger
-
-# force 256 color
 export TERM=screen-256color
-# export TERM=xterm-256color
-# make sure tmux is loaded correctly
-# alias tmux="TERM=screen-256color-bce tmux"
-
 export LANG=en_US.UTF-8
 
-# Plugin conf
-# fasd
-export _FASD_DATA="$HOME/.fasd_history"
-DISABLE_AUTO_TITLE="true"
-DISABLE_AUTO_UPDATE="true"
-plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions wd fasd fzf zsh-syntax-highlighting git-prompt)
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
-# initialize fasd
-eval "$(fasd --init auto)"
-
-export PATH="usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
-
-# source $ZSH/oh-my-zsh.sh
-
 # disable pasted text highlighting
 zle_highlight+=(paste:none)
 
 # export PATH="/opt/anaconda2/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # Store npm packages in user space, no root
 # might need to add prefix=${HOME}/.npm-packages to ~/.npmrc
@@ -60,6 +50,19 @@ export PATH="$HOME/.local/bin:$PATH"
 NPM_PACKAGES="${HOME}/.npm-packages"
 export PATH="$HOME/.npm-packages/bin:$PATH"
 
+# Plugin conf -----------------
+export _FASD_DATA="$HOME/.fasd_history"
+DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_UPDATE="true"
+# plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions wd fasd fzf zsh-syntax-highlighting git-prompt)
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+# initialize fasd
+eval "$(fasd --init auto)"
+
+export FZF_DEFAULT_OPS="--extended"
+# export FZF_DEFAULT_COMMAND="fd --type f"
+# export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+setopt HIST_IGNORE_ALL_DUPS
 
 # use ctrl+o to navigate directories in ranger
 function ranger-cd {
@@ -85,11 +88,6 @@ export MANPATH=/usr/local/cuda/man:${MANPATH}
 
 # source ~/.rosrc
 
-export FZF_DEFAULT_OPS="--extended"
-# export FZF_DEFAULT_COMMAND="fd --type f"
-# export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-setopt HIST_IGNORE_ALL_DUPS
-
 # Use android studio adb if available
 if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
     alias adb="$HOME/Android/Sdk/platform-tools/adb" 
@@ -100,7 +98,7 @@ alias dirs='dirs -v'
 alias d='dirs -v'
 alias tree='tree -L 3 --filelimit 20 -h'
 alias c='fasd -e code -d'
-
+alias less='cless' # colored less 
 
 # source /home/anne/.config/broot/launcher/bash/br
 

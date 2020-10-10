@@ -54,6 +54,7 @@ set foldnestmax=10 " 10 nested fold max
 set pastetoggle=<F2> " Toggle pasting mode
 set clipboard=unnamed " copy and paste to system clipboard
 
+set encoding=utf-8 
 
 " ----------- ctrl-p ------------
 " set tags+=tags
@@ -61,7 +62,7 @@ let g:ctrlp_extensions = ['tag']
 
 " ----------- Colors and gutter settings --------
 set t_Co=256 " enable 256-color mode
-colorscheme monokai
+silent! colorscheme monokai
 
 let g:airline_powerline_fonts = 1
 let g:airline_theme='monokai' 
