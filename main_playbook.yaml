@@ -2,7 +2,7 @@
   hosts: local
   roles:
     - {role: packages}
-    - {role: common}
+    # - {role: common}
     - {role: tmux}
     - {role: zsh}
     # # Tag each role so that we can select individual roles to run with ansible-playbook --tags

@@ -4,37 +4,15 @@
   apt: name=zsh 
   become_method: sudo
 
+- name: Download antigen
+  get_url:
+    url: http://git.io/antigen
+    dest: ~/.antigen/antigen.zsh
+
 - name: Link .zshrc
   file:
     src: "{{ playbook_dir }}/roles/zsh/files/zshrc"
     dest: "~/.zshrc"
-    state: link
-
-- name: Cloning oh-my-zsh
-  git:
-    repo=https://github.com/robbyrussell/oh-my-zsh
-    dest=~/.oh-my-zsh
-
-- name: Setup zsh autosuggestions
-  git:
-    repo="https://github.com/zsh-users/zsh-autosuggestions"
-    dest="~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-
-- name: Setup zsh syntax highlighting
-  git:
-    repo: "https://github.com/zsh-users/zsh-syntax-highlighting"
-    dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighitng"
-
-- name: Set spaceship prompt
-  git: 
-    repo="https://github.com/denysdovhan/spaceship-prompt"
-    dest="~/.oh-my-zsh/custom/themes/spaceship-prompt"
-    depth=1
-
-- name: Link spaceship prompt
-  file:
-    src: "~/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
-    dest: "~/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
     state: link
 
 - name: Get fzf
@@ -42,7 +20,6 @@
     repo: "https://github.com/junegunn/fzf.git"
     dest: "~/.fzf"
 
-# Fasd
 - import_tasks: fasd.yaml
 - import_tasks: patched_fonts.yaml # should only have to be done on GUI
 
