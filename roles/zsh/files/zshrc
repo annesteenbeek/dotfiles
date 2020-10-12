@@ -8,6 +8,7 @@ antigen bundle colorize
 antigen bundle colored-man-pages
 antigen bundle command-not-found
 antigen bundle compleat
+antigen bundle clvv/fasd fasd
 antigen bundle fasd
 antigen bundle fzf
 antigen bundle git-prompt
