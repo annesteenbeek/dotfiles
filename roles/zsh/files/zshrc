@@ -1,13 +1,12 @@
 source ~/.antigen/antigen.zsh
 
 antigen use oh-my-zsh
-antigen bundle zsh-syntax-highlighting
-antigen bundle zsh-autosuggestions
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle git
 antigen bundle colorize 
 antigen bundle colored-man-pages
 antigen bundle command-not-found
-antigen bundle compleat
 antigen bundle clvv/fasd fasd
 antigen bundle fasd
 antigen bundle fzf
@@ -16,20 +15,14 @@ antigen bundle git-prompt
 antigen theme denysdovhan/spaceship-prompt
 antigen apply
 
-# ZSH_THEME="bira"
 ZSH_THEME="spaceship"
-# Spaceship settings
-# SPACESHIP_CHAR_SYMBOL="$ "
 SPACESHIP_DIR_TRUNC=5
 SPACESHIP_DIR_TRUNC_PREFIX="…/"
 SPACESHIP_DIR_TRUNC_REPO="false"
-# SPACESHIP_GIT_PREFIX=" "
-# SPACESHIP_GIT_SUFFIX=" "
 SPACESHIP_VENV_SYMBOL="🐍·"
 SPACESHIP_EXIT_CODE_SHOW="true"
 SPACESHIP_EXIT_CODE_SYMBOL=""
 
-# Do menu-driven completion.
 zstyle ':completion:*' menu select 
 
 # set ranger default editor
@@ -41,10 +34,6 @@ export LANG=en_US.UTF-8
 # disable pasted text highlighting
 zle_highlight+=(paste:none)
 
-# export PATH="/opt/anaconda2/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
 # Store npm packages in user space, no root
 # might need to add prefix=${HOME}/.npm-packages to ~/.npmrc
 # make sure ~/.npm-packages exists
@@ -55,7 +44,6 @@ export PATH="$HOME/.npm-packages/bin:$PATH"
 export _FASD_DATA="$HOME/.fasd_history"
 DISABLE_AUTO_TITLE="true"
 DISABLE_AUTO_UPDATE="true"
-# plugins=(git colorize colored-man-pages command-not-found compleat zsh-autosuggestions wd fasd fzf zsh-syntax-highlighting git-prompt)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 # initialize fasd
 eval "$(fasd --init auto)"
@@ -84,9 +72,6 @@ bindkey -s '^O' 'ranger-cd\n'
 export PATH="/usr/local/cuda/bin:$PATH"
 export MANPATH=/usr/local/cuda/man:${MANPATH}
 
-# rust cargo to path
-# export PATH="/home/$USER/.cargo/bin:$PATH"
-
 # source ~/.rosrc
 
 # Use android studio adb if available
@@ -100,8 +85,6 @@ alias d='dirs -v'
 alias tree='tree -L 3 --filelimit 20 -h'
 alias c='fasd -e code -d'
 alias less='cless' # colored less 
-
-# source /home/anne/.config/broot/launcher/bash/br
 
 # Freqtrade TA
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH

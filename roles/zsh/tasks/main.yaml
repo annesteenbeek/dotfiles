@@ -28,7 +28,6 @@
 - name: Build fzf binary
   shell: "~/.fzf/install --bin"
 
-# - import_tasks: fasd.yaml
 - import_tasks: patched_fonts.yaml # should only have to be done on GUI
 
 - name: Set default shell
