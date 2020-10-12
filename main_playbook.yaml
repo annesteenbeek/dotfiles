@@ -3,6 +3,7 @@
   roles:
     - {role: packages}
     # - {role: common}
+    - {role: locale}
     - {role: tmux}
     - {role: zsh}
     - {role: vim}
