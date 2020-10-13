@@ -7,13 +7,13 @@
 
 - name: Create backup dir
   file:
-    path: {{ playbook_dir }}/backup
+    path: "{{ playbook_dir }}/backup"
     state: directory
-  when: links.stat.islnk is defined and links.stat.islnk
+  when: links.stat.islnk is defined and not links.stat.islnk
 
 - name: Backup {{ dest }}
-  command: mkdir -p {{ playbook_dir|quote }}/backup ; mv {{ dest|quote }} {{ playbook_dir|quote }}/backup/
-  when: links.stat.islnk is defined and links.stat.islnk
+  command: mv {{ dest|quote }} {{ playbook_dir }}/backup/
+  when: links.stat.islnk is defined and not links.stat.islnk
 
 - name: Create link for {{ src }}
   file: 
