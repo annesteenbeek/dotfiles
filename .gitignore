@@ -1,4 +1,3 @@
 *.swp
 rosrc
-dotfiles_old/*
-dotfiles_old/*
+backup/*
