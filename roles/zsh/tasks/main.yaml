@@ -14,12 +14,6 @@
     url: http://git.io/antigen
     dest: ~/.antigen/antigen.zsh
 
-# - name: Link .zshrc
-#   file:
-#     src: "{{ playbook_dir }}/roles/zsh/files/zshrc"
-#     dest: "~/.zshrc"
-#     state: link
-
 - import_tasks: safe_symlink.yaml
   vars: 
     src: "{{ playbook_dir }}/roles/zsh/files/zshrc"

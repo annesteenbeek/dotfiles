@@ -4,11 +4,10 @@
   apt: name=tmux
   become_method: sudo
 
-- name: Link tmux.conf
-  file:
+- import_tasks: safe_symlinks.yaml
+  vars:
     src: "{{ playbook_dir }}/roles/tmux/files/tmux.conf"
     dest: "~/.tmux.conf"
-    state: link
 
 - name: Install tpm
   git: 

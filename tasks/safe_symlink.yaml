@@ -1,7 +1,8 @@
 ---
 
-- stat: 
-  path: "{{ dest }}"
+- name: Check if symlink already exists
+  stat: 
+    path: "{{ dest }}"
   register: links
 
 - name: Backup {{ dest }}
