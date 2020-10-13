@@ -4,7 +4,7 @@
   apt: name=tmux
   become_method: sudo
 
-- import_tasks: safe_symlinks.yaml
+- import_tasks: safe_symlink.yaml
   vars:
     src: "{{ playbook_dir }}/roles/tmux/files/tmux.conf"
     dest: "~/.tmux.conf"

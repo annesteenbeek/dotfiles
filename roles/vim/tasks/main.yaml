@@ -14,7 +14,7 @@
     url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     dest: "~/.vim/autoload/plug.vim"
 
-- import_tasks: safe_symlinks.yaml
+- import_tasks: safe_symlink.yaml
   vars:
     src: "{{ playbook_dir }}/roles/vim/files/vimrc"
     dest: "~/.vimrc"
