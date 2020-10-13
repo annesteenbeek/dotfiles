@@ -4,7 +4,6 @@ config_system_locale: 'nl_NL.UTF-8'
 config_system_language: 'en_US.UTF-8'
 
 packages_to_install: 
-  - make
   - build-essential
   - htop
   - ranger 

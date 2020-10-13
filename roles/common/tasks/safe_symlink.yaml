@@ -1,0 +1,18 @@
+---
+
+- stat: 
+  path: "{{ dest }}"
+  register: links
+
+- name: Backup {{ dest }}
+  command: mkdir -p {{playbook_dir}}/backup; mv {{ dest }} {{ playbook_dir }}/backup/
+  when: links.stat.islnk is defined and links.stat.islnk
+
+- name: Create link for {{ src }}
+  file: 
+    src: "{{ src }}"
+    dest: "{{ dest }}"
+    state: link
+    force: yes
+
+
