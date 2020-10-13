@@ -4,7 +4,8 @@
     var: packages_to_install
 
 - name: "Install packages"
+  become: yes
   apt:
-    update-cache: yes
     pkg: "{{ packages_to_install }}"
     state: present
+  # become_method: sudo
