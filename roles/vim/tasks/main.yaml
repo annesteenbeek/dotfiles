@@ -1,8 +1,8 @@
 ---
 
 - name: Install vim
+  become: yes
   apt: name=vim
-  become_method: sudo
 
 - name: Create autoload dir
   file:
