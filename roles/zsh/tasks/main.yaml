@@ -1,6 +1,7 @@
 ---
 
 - name: Install zsh
+  become: yes
   apt: name=zsh 
   become_method: sudo
 
@@ -30,6 +31,7 @@
 - import_tasks: patched_fonts.yaml # should only have to be done on GUI
 
 - name: Set default shell
+  become: yes
   user: 
     name: "{{ ansible_user }}"
     shell: /usr/bin/zsh

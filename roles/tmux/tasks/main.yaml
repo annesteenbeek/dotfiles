@@ -1,6 +1,7 @@
 ---
 
 - name: Install tmux apt
+  become: yes
   apt: name=tmux
   become_method: sudo
 
