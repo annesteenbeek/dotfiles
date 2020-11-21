@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 source ~/.antigen/antigen.zsh
 
 antigen use oh-my-zsh
@@ -22,7 +15,10 @@ antigen bundle wookayin/fzf-fasd
 antigen bundle git-prompt
 # antigen bundle marlonrichert/zsh-autocomplete
 
-antigen theme denysdovhan/spaceship-prompt
+# workaround for https://github.com/zsh-users/antigen/issues/675
+# antigen theme denysdovhan/spaceship-prompt
+THEME=denysdovhan/spaceship-prompt
+antigen list | grep $THEME; if [ $? -ne 0 ]; then antigen theme $THEME; fi
 # antigen theme romkatv/powerlevel10k
 antigen apply
 
@@ -36,12 +32,15 @@ SPACESHIP_EXIT_CODE_SYMBOL=""
 
 zstyle ':completion:*' menu select 
 
-# set ranger default editor
 export EDITOR=vim ranger
 export TERM=screen-256color
 export LANG=en_US.UTF-8
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# History
+setopt HIST_IGNORE_DUPS
+setopt SHARE_HISTORY
+export ZSH_AUTOSUGGEST_USE_ASYNC=1
+
 # disable pasted text highlighting
 zle_highlight+=(paste:none)
 
@@ -59,10 +58,9 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 # initialize fasd
 eval "$(fasd --init auto)"
 
-export FZF_DEFAULT_OPS="--extended"
+export FZF_DEFAULT_OPS="--extended --history-size=$HISTSIZE"
 # export FZF_DEFAULT_COMMAND="fd --type f"
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-setopt HIST_IGNORE_ALL_DUPS
 
 # use ctrl+o to navigate directories in ranger
 function ranger-cd {
@@ -78,9 +76,6 @@ bindkey -s '^O' 'ranger-cd\n'
 
 autoload edit-command; zle -N edit-command-line
 bindkey '^x' edit-command-line
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # add cuda tools to command path
 export PATH="/usr/local/cuda/bin:$PATH"
@@ -99,9 +94,7 @@ alias d='dirs -v'
 alias tree='tree -L 3 --filelimit 20 -h'
 alias c='fasd -e code -d'
 alias less='cless' # colored less 
+alias dc='docker-compose'
 
 # Freqtrade TA
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
