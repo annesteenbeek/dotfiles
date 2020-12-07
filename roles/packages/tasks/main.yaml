@@ -12,10 +12,10 @@
 
 - name: Download LSD package
   get_url: 
-    url: "https://github.com/Peltoche/lsd/releases/download/0.18.0/lsd-musl_0.18.0_amd64.de://github.com/Peltoche/lsd/releases/download/0.18.0/lsd-musl_0.18.0_amd64.deb"
+    url: "https://github.com/Peltoche/lsd/releases/download/0.18.0/lsd_0.18.0_amd64.deb"
     dest: "/tmp/lsd.deb"
 
 - name: "Install LSD package"
-  sudo: true
+  become: yes
   apt:
     deb: "/tmp/lsd.deb"
