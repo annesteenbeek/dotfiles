@@ -9,3 +9,13 @@
     pkg: "{{ packages_to_install }}"
     state: present
   # become_method: sudo
+
+- name: Download LSD package
+  get_url: 
+    url: "https://github.com/Peltoche/lsd/releases/download/0.18.0/lsd-musl_0.18.0_amd64.de://github.com/Peltoche/lsd/releases/download/0.18.0/lsd-musl_0.18.0_amd64.deb"
+    dest: "/tmp/lsd.deb"
+
+- name: "Install LSD package"
+  sudo: true
+  apt:
+    deb: "/tmp/lsd.deb"
