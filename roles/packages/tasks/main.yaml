@@ -19,3 +19,12 @@
   become: yes
   apt:
     deb: "/tmp/lsd.deb"
+
+- name: "Install ranger"
+  pip:
+    name: ranger-fm
+
+- name: "ranger devicons plugin"
+  git:
+    repo: git@github.com:alexanderjeurissen/ranger_devicons.git
+    dest: $HOME/.config/ranger/plugins/ranger_devicons
