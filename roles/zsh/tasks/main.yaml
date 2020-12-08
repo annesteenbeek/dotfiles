@@ -1,10 +1,5 @@
 ---
 
-- name: Install zsh
-  become: yes
-  apt: name=zsh 
-  become_method: sudo
-
 - name: Create antigen dir
   file:
     path: "~/.antigen"

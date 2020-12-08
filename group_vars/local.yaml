@@ -6,4 +6,6 @@ config_system_language: 'en_US.UTF-8'
 packages_to_install: 
   - build-essential
   - htop
-  - ranger 
+  - tmux
+  - zsh
+  - vim

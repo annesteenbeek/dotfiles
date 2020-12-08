@@ -1,9 +1,5 @@
 ---
 
-- name: Install vim
-  become: yes
-  apt: name=vim
-
 - name: Create autoload dir
   file:
     path: "~/.vim/autoload" 
