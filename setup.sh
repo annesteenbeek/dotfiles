@@ -103,13 +103,13 @@ set_locale () {
     sudo dpkg-reconfigure locales
 }
 
-# install_packages
-# install_pip_packages
-# place_dotfiles
-# install_antigen
-# install_fzf
-# install_vim_plugins
-# install_tmux_plugins
-# install_ranger_plugins
-# set_zsh_default
+install_packages
+install_pip_packages
+place_dotfiles
+install_antigen
+install_fzf
+install_vim_plugins
+install_tmux_plugins
+install_ranger_plugins
+set_zsh_default
 install_lsd
