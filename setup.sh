@@ -39,9 +39,10 @@ place_dotfiles() {
 
 install_packages () {
     sudo apt-get update
-    for package in $packages; do
-      sudo apt install -y "${package}"
-    done
+    # for package in $packages; do
+      # sudo apt install -y "${package}"
+    # done
+    sudo apt install -y $packages
 }
 
 install_vim_plugins () {
