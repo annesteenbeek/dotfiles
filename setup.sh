@@ -4,15 +4,14 @@ set -Eeuo pipefail
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 OLDDIR="$DIR/backup/"             # old dotfiles backup directory
-FILES="$DIR/files/*"
+FILE_DIR="$DIR/files"
 
-packages="zsh tmux source-highlight vim build-essential"             # packages to be installed
-
-#TODO don't start zsh after installation
-#TODO Also backup .conf folder?
+packages="zsh tmux source-highlight vim python-pip build-essential"             # packages to be installed
+pip_packages="ranger-fm Pygments"
 
 place_dotfiles() {
-    for source_path in $FILES; do
+    files="$(find $FILE_DIR -type f)"
+    for source_path in $files; do
       file_path=${source_path#"$DIR/files/"}
       dest=~/."$file_path"
       if [ -L "${dest}" ] ; then
@@ -37,12 +36,20 @@ place_dotfiles() {
     done
 }
 
+install_lsd () {
+  if [[ "$(which lsd)" != "" ]]; then
+    wget https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd_0.20.1_amd64.deb /tmp/lsd.deb
+    sudo dpkg -i /tmp/lsd.deb
+  fi
+}
+
 install_packages () {
     sudo apt-get update
-    # for package in $packages; do
-      # sudo apt install -y "${package}"
-    # done
     sudo apt install -y $packages
+}
+
+install_pip_packages () {
+  pip install $pip_packages
 }
 
 install_vim_plugins () {
@@ -55,8 +62,15 @@ install_vim_plugins () {
   # TODO also install code formaters, pylint
 }
 
+install_ranger_plugins () {
+  if [[ ! -d ~/.config/ranger/plugins/ranger_devicons ]]; then
+    git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
+  fi
+  # echo "default_linemode devicons" >> ~/.config/ranger/rc.conf
+}
+
 install_antigen () {
-  if [ ! -d ~/.antigen/antigen.zsh ]; then
+  if [ ! -f ~/.antigen/antigen.zsh ]; then
     mkdir ~/.antigen
     curl -L git.io/antigen > ~/.antigen/antigen.zsh
   fi
@@ -89,18 +103,12 @@ set_locale () {
     sudo dpkg-reconfigure locales
 }
 
-install_patched_fonts () {
-    git clone https://github.com/powerline/fonts.git /tmp/fonts --depth=1
-    pushd /tmp/fonts
-    ./install.sh
-    popd
-}
-
 install_packages
+install_pip_packages
 place_dotfiles
 install_antigen
 install_fzf
 install_vim_plugins
 setup_tmux_plugins
 set_zsh_default
-# install_patched_fonts
+install_lsd
