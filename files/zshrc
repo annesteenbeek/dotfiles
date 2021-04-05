@@ -59,6 +59,7 @@ zle_highlight+=(paste:none)
 # make sure ~/.npm-packages exists
 NPM_PACKAGES="${HOME}/.npm-packages"
 export PATH="$HOME/.npm-packages/bin:$PATH"
+export PATH=$PATH:~/.local/bin
 
 # Plugin conf -----------------
 export _FASD_DATA="$HOME/.fasd_history"
