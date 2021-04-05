@@ -1,9 +1,0 @@
----
-- name: Install locales
-  become: yes
-  apt:
-    pkg: locales
-
-- name: Generate Locales nl_NL.UTF-8 and 'en_US.UTF-8'
-  command: locale-gen nl_NL.UTF-8 en_US.UTF-8 
-  become: yes

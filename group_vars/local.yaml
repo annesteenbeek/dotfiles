@@ -1,9 +1,0 @@
-backup_dir: "~/.dotfiles_backup"
-
-
-packages_to_install: 
-  - build-essential
-  - htop
-  - tmux
-  - zsh
-  - vim
