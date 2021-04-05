@@ -6,7 +6,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 OLDDIR="$DIR/backup/"             # old dotfiles backup directory
 FILE_DIR="$DIR/files"
 
-packages="zsh tmux source-highlight vim python-pip build-essential"             # packages to be installed
+packages="zsh tmux source-highlight vim python3-pip build-essential"             # packages to be installed
 pip_packages="ranger-fm Pygments"
 
 place_dotfiles() {
@@ -49,15 +49,15 @@ install_packages () {
 }
 
 install_pip_packages () {
-  pip install $pip_packages
+  pip3 install $pip_packages
 }
 
 install_vim_plugins () {
-  if [[ ! -d ~/.vim/autoload/plug.vim ]]; then
+  if [[ ! -f ~/.vim/autoload/plug.vim ]]; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   fi
-  vim +PluginInstall +qall
+  vim +PlugInstall +qall
   # TODO install vim plugins, mainly command T, which requires ruby make
   # TODO also install code formaters, pylint
 }
@@ -83,7 +83,7 @@ install_fzf () {
   fi
 }
 
-setup_tmux_plugins () {
+install_tmux_plugins () {
     if [ ! -d  ~/.tmux/plugins/tpm ]; then
         git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
     fi
@@ -109,6 +109,7 @@ place_dotfiles
 install_antigen
 install_fzf
 install_vim_plugins
-setup_tmux_plugins
+install_tmux_plugins
+install_ranger_plugins
 set_zsh_default
 install_lsd
