@@ -6,7 +6,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 OLDDIR="$DIR/backup/"             # old dotfiles backup directory
 FILES="$DIR/files/*"
 
-packages="zsh tmux source-highlight vim-gnome build-essential"             # packages to be installed
+packages="zsh tmux source-highlight vim build-essential"             # packages to be installed
 
 #TODO don't start zsh after installation
 #TODO Also backup .conf folder?
@@ -55,14 +55,17 @@ install_vim_plugins () {
 }
 
 install_antigen () {
+  if [ ! -d ~/.antigen/antigen.zsh ]; then
+    mkdir ~/.antigen
     curl -L git.io/antigen > ~/.antigen/antigen.zsh
+  fi
 }
 
 install_fzf () {
-    if [ ! -d ~/.fzf ]; then
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-        ~/.fzf/install --bin
-    fi
+  if [ ! -d ~/.fzf ]; then
+      git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+      ~/.fzf/install --bin
+  fi
 }
 
 setup_tmux_plugins () {
@@ -94,6 +97,7 @@ install_patched_fonts () {
 
 install_packages
 place_dotfiles
+install_antigen
 install_fzf
 install_vim_plugins
 setup_tmux_plugins
