@@ -7,4 +7,4 @@ sudo add-apt-repository ppa:ansible/ansible-2.9 -y
 sudo apt-get update
 sudo apt-get install ansible -y
 
-ansible-playbook -i $DIR/hosts $DIR/main_playbook.yaml --ask-become
+ansible-playbook -i "$DIR"/hosts "$DIR"/main_playbook.yaml --ask-become

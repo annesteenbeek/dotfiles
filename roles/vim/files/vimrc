@@ -103,8 +103,11 @@ nmap <Leader>t <esc>:TagbarToggle<CR> " Toggle tagbar
 nmap <C-_>   <Plug>NERDCommenterToggle
 vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
 
-map <Leader>n <esc>:tabnext<CR>
-map <Leader>m <esc>:tabprevious<CR>
+" Buffer Navigation
+nmap <Tab> <esc>:bnext<CR>
+nmap <S-Tab> <esc>:bprev<CR>
+" nmap <c-w> <esc>:bd<CR>  
+" nnoremap <Leader>, :Buffers<CR> " browse buffers
 
 map <Leader>p :pclose<CR>
 

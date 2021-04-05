@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 source ~/.antigen/antigen.zsh
 
 antigen use oh-my-zsh
@@ -17,22 +24,25 @@ antigen bundle git-prompt
 
 # workaround for https://github.com/zsh-users/antigen/issues/675
 # antigen theme denysdovhan/spaceship-prompt
-THEME=denysdovhan/spaceship-prompt
-antigen list | grep $THEME; if [ $? -ne 0 ]; then antigen theme $THEME; fi
-# antigen theme romkatv/powerlevel10k
+# THEME=denysdovhan/spaceship-prompt
+# antigen list | grep $THEME; if [ $? -ne 0 ]; then antigen theme $THEME; fi
+antigen theme romkatv/powerlevel10k
 antigen apply
 
-ZSH_THEME="spaceship"
-SPACESHIP_DIR_TRUNC=5
-SPACESHIP_DIR_TRUNC_PREFIX="…/"
-SPACESHIP_DIR_TRUNC_REPO="false"
-SPACESHIP_VENV_SYMBOL="🐍·"
-SPACESHIP_EXIT_CODE_SHOW="true"
-SPACESHIP_EXIT_CODE_SYMBOL=""
+# ZSH_THEME="spaceship"
+# SPACESHIP_DIR_TRUNC=5
+# SPACESHIP_DIR_TRUNC_PREFIX="…/"
+# SPACESHIP_DIR_TRUNC_REPO="false"
+# SPACESHIP_VENV_SYMBOL="🐍·"
+# SPACESHIP_EXIT_CODE_SHOW="true"
+# SPACESHIP_EXIT_CODE_SYMBOL=""
+
+typeset -g POWERLEVEL9K_TIME_ICON=""
 
 zstyle ':completion:*' menu select 
 
 export EDITOR=vim ranger
+export PAGER=cless less
 export TERM=screen-256color
 export LANG=en_US.UTF-8
 
@@ -59,13 +69,16 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 eval "$(fasd --init auto)"
 
 export FZF_DEFAULT_OPS="--extended --history-size=$HISTSIZE"
+# export FZF_TMUX_OPTS=-p # tmux popup for fzf
 # export FZF_DEFAULT_COMMAND="fd --type f"
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # use ctrl+o to navigate directories in ranger
 function ranger-cd {
     tempfile="$(mktemp -t tmp.XXXXXX)"
-    /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    # /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    # TODO: find ranger
+    /home/$USER/.local/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
     test -f "$tempfile" &&
     if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
         cd -- "$(cat "$tempfile")"
@@ -81,11 +94,16 @@ bindkey '^x' edit-command-line
 export PATH="/usr/local/cuda/bin:$PATH"
 export MANPATH=/usr/local/cuda/man:${MANPATH}
 
-# source ~/.rosrc
+source ~/.rosrc
 
 # Use android studio adb if available
 if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
     alias adb="$HOME/Android/Sdk/platform-tools/adb" 
+fi
+
+if command -v lsd &> /dev/null
+then
+    alias ls='lsd'
 fi
 
 alias clc='clear'
@@ -98,3 +116,9 @@ alias dc='docker-compose'
 
 # Freqtrade TA
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+export NVM_DIR="/home/anne/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
