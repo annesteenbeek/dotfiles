@@ -2,34 +2,54 @@
 set -Eeuo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
 OLDDIR="$DIR/backup/"             # old dotfiles backup directory
 FILE_DIR="$DIR/files"
 
 packages="zsh tmux source-highlight vim python3-pip build-essential"             # packages to be installed
 pip_packages="ranger-fm Pygments"
 
+setup_colors() {
+  if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
+    NOCOLOR='\033[0m' RED='\033[0;31m' GREEN='\033[0;32m' ORANGE='\033[0;33m' BLUE='\033[0;34m' PURPLE='\033[0;35m' CYAN='\033[0;36m' YELLOW='\033[1;33m'
+  else
+    NOCOLOR='' RED='' GREEN='' ORANGE='' BLUE='' PURPLE='' CYAN='' YELLOW=''
+  fi
+}
+setup_colors
+
+msg() {
+  echo >&2 -e "${1-}"
+}
+
+
 place_dotfiles() {
+    msg "${GREEN}Linking dotfiles${NOCOLOR}"
     files="$(find $FILE_DIR -type f)"
     for source_path in $files; do
-      file_path=${source_path#"$DIR/files/"}
+      file_path=${source_path#"$DIR/files/"} # use # to chop off beginning, % chop of end
       dest=~/."$file_path"
-      if [ -L "${dest}" ] ; then
-        if [ -e "${dest}" ] ; then
+      dir="$(dirname $dest)"
+      if [ -L "${dest}" ]; then
+        if [ -e "${dest}" ]; then
           # Good link
-          echo "${dest} already exists, doing nothing"
+          :
         else
           # Broken link
           rm "${dest}"
           ln -s "$source_path" "$dest"
+          msg "${GREEN}Linking $file_path ${NOCOLOR}"
         fi
-      elif [ -e "${dest}" ] ; then
+      elif [ -e "${dest}" ]; then
         # Not a link
         mv --backup=numbered ~/."$file_path" "$OLDDIR"
         ln -s "$source_path" "$dest"
       else
         # Missing
+        if [[ ! -d $dir ]]; then
+          mkdir -p $dir
+        fi
         ln -s "$source_path" "$dest"
+        msg "${GREEN}Linking $file_path ${NOCOLOR}"
       fi
 
 
@@ -38,21 +58,25 @@ place_dotfiles() {
 
 install_lsd () {
   if [[ ! -x "$(command -v lsd)" ]]; then
+    msg "${GREEN}Installing lsd${NOCOLOR}"
     wget https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd_0.20.1_amd64.deb -O /tmp/lsd.deb
     sudo dpkg -i /tmp/lsd.deb
   fi
 }
 
 install_packages () {
+    msg "${GREEN}Installing packages: $packages${NOCOLOR}"
     sudo apt-get update
-    sudo apt install -y $packages
+    sudo apt install -y -q $packages
 }
 
 install_pip_packages () {
+  msg "${GREEN}Installing pip packages: $pip_packages${NOCOLOR}"
   pip3 install $pip_packages
 }
 
 install_vim_plugins () {
+  msg "${GREEN}Installing vim plugins${NOCOLOR}"
   if [[ ! -f ~/.vim/autoload/plug.vim ]]; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -63,14 +87,15 @@ install_vim_plugins () {
 }
 
 install_ranger_plugins () {
+  msg "${GREEN}Installing ranger plugins${NOCOLOR}"
   if [[ ! -d ~/.config/ranger/plugins/ranger_devicons ]]; then
     git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
   fi
-  # echo "default_linemode devicons" >> ~/.config/ranger/rc.conf
 }
 
 install_antigen () {
   if [ ! -f ~/.antigen/antigen.zsh ]; then
+    msg "${GREEN}Installing antigen${NOCOLOR}"
     mkdir ~/.antigen
     curl -L git.io/antigen > ~/.antigen/antigen.zsh
   fi
@@ -78,30 +103,26 @@ install_antigen () {
 
 install_fzf () {
   if [ ! -d ~/.fzf ]; then
+      msg "${GREEN}Installing fzf${NOCOLOR}"
       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
       ~/.fzf/install --bin
   fi
 }
 
 install_tmux_plugins () {
-    if [ ! -d  ~/.tmux/plugins/tpm ]; then
-        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    fi
-    bash ~/.tmux/plugins/tpm/scripts/install_plugins.sh
+  msg "${GREEN}Installing tmux plugins${NOCOLOR}"
+  if [ ! -d  ~/.tmux/plugins/tpm ]; then
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  fi
+  bash ~/.tmux/plugins/tpm/scripts/install_plugins.sh
 }
 
 set_zsh_default () {
+  msg "${GREEN}Setting zsh as default shell${NOCOLOR}"
   chsh -s "$(which zsh)"
 }
 
-set_locale () {
-    export LANGUAGE=en_US.UTF-8
-    export LANG=en_US.UTF-8
-    export LC_ALL=en_US.UTF-8
-    export LC_CTYPE="en_US.UTF-8"
-    locale-gen en_US.UTF-8
-    sudo dpkg-reconfigure locales
-}
+#TODO: --gui tag that installs patched nerdfonts, 
 
 install_packages
 install_pip_packages
