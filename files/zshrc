@@ -29,14 +29,6 @@ antigen bundle git-prompt
 antigen theme romkatv/powerlevel10k
 antigen apply
 
-# ZSH_THEME="spaceship"
-# SPACESHIP_DIR_TRUNC=5
-# SPACESHIP_DIR_TRUNC_PREFIX="…/"
-# SPACESHIP_DIR_TRUNC_REPO="false"
-# SPACESHIP_VENV_SYMBOL="🐍·"
-# SPACESHIP_EXIT_CODE_SHOW="true"
-# SPACESHIP_EXIT_CODE_SYMBOL=""
-
 typeset -g POWERLEVEL9K_TIME_ICON=""
 
 zstyle ':completion:*' menu select 
@@ -45,6 +37,8 @@ export EDITOR=vim ranger
 export PAGER=cless less
 export TERM=screen-256color
 export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export ALL=en_US.UTF-8
 
 # History
 setopt HIST_IGNORE_DUPS

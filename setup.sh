@@ -118,8 +118,11 @@ install_tmux_plugins () {
 }
 
 set_zsh_default () {
-  msg "${GREEN}Setting zsh as default shell${NOCOLOR}"
-  chsh -s "$(which zsh)"
+  ZSH="$(which zsh)"
+  if [[ "$(basename $SHELL)" != "$(basename $ZSH)" ]]; then
+    msg "${GREEN}Setting zsh as default shell${NOCOLOR}"
+    chsh -s "$(which zsh)"
+  fi
 }
 
 #TODO: --gui tag that installs patched nerdfonts, 
@@ -132,5 +135,5 @@ install_fzf
 install_vim_plugins
 install_tmux_plugins
 install_ranger_plugins
-set_zsh_default
 install_lsd
+set_zsh_default
