@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 OLDDIR="$DIR/backup/"             # old dotfiles backup directory
 FILE_DIR="$DIR/files"
 
-packages="zsh tmux source-highlight vim python3-pip build-essential"             # packages to be installed
+packages="zsh tmux source-highlight vim python3-pip build-essential curl htop"             # packages to be installed
 pip_packages="ranger-fm Pygments"
 
 setup_colors() {
@@ -126,6 +126,8 @@ set_zsh_default () {
 }
 
 #TODO: --gui tag that installs patched nerdfonts, 
+#TODO: git settings
+#TODO: asdf?
 
 install_packages
 install_pip_packages
