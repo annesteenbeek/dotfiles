@@ -24,9 +24,9 @@ antigen bundle git-prompt
 
 # workaround for https://github.com/zsh-users/antigen/issues/675
 # antigen theme denysdovhan/spaceship-prompt
-# THEME=denysdovhan/spaceship-prompt
-# antigen list | grep $THEME; if [ $? -ne 0 ]; then antigen theme $THEME; fi
-antigen theme romkatv/powerlevel10k
+THEME=romkatv/powerlevel10k
+antigen list | grep $THEME; if [ $? -ne 0 ]; then antigen theme $THEME; fi
+# antigen theme romkatv/powerlevel10k
 antigen apply
 
 typeset -g POWERLEVEL9K_TIME_ICON=""
@@ -51,19 +51,22 @@ zle_highlight+=(paste:none)
 # Store npm packages in user space, no root
 # might need to add prefix=${HOME}/.npm-packages to ~/.npmrc
 # make sure ~/.npm-packages exists
-NPM_PACKAGES="${HOME}/.npm-packages"
+export NPM_PACKAGES="${HOME}/.npm-packages"
 export PATH="$HOME/.npm-packages/bin:$PATH"
-export PATH=$PATH:~/.local/bin
+export PATH="$PATH:~/.local/bin"
+
+export NVM_DIR="${HOME}/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # Plugin conf -----------------
-export _FASD_DATA="$HOME/.fasd_history"
+_FASD_DATA="$HOME/.fasd_history"
 DISABLE_AUTO_TITLE="true"
 DISABLE_AUTO_UPDATE="true"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 # initialize fasd
 eval "$(fasd --init auto)"
 
-export FZF_DEFAULT_OPS="--extended --history-size=$HISTSIZE"
+FZF_DEFAULT_OPS="--extended --history-size=$HISTSIZE"
 # export FZF_TMUX_OPTS=-p # tmux popup for fzf
 # export FZF_DEFAULT_COMMAND="fd --type f"
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -89,17 +92,39 @@ bindkey '^x' edit-command-line
 export PATH="/usr/local/cuda/bin:$PATH"
 export MANPATH=/usr/local/cuda/man:${MANPATH}
 
-source ~/.rosrc
+if [[ -d "/opt/ros" ]]; then
+    source ~/.rosrc
+fi
 
 # Use android studio adb if available
 if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
     alias adb="$HOME/Android/Sdk/platform-tools/adb" 
 fi
 
-if command -v lsd &> /dev/null
-then
-    alias ls='lsd'
-fi
+# cd/bd using pusdh, popd https://mhoffman.github.io/2015/05/21/how-to-navigate-directories-with-the-shell.html
+function cd() {
+  if [ "$#" = "0" ]
+  then
+  pushd ${HOME} > /dev/null
+  elif [ -f "${1}" ]
+  then
+    ${EDITOR} ${1}
+  else
+  pushd "$1" > /dev/null
+  fi
+}
+
+function bd(){
+  if [ "$#" = "0" ]
+  then
+    popd > /dev/null
+  else
+    for i in $(seq ${1})
+    do
+      popd > /dev/null
+    done
+  fi
+}
 
 alias clc='clear'
 alias dirs='dirs -v'
@@ -109,11 +134,13 @@ alias c='fasd -e code -d'
 alias less='cless' # colored less 
 alias dc='docker-compose'
 
+# use LSD if installed
+if command -v lsd &> /dev/null; then
+    alias ls='lsd --date=+"%Y-%m-%d %H:%M"'
+fi
+
 # Freqtrade TA
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-
-export NVM_DIR="/home/anne/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
