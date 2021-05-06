@@ -5,6 +5,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 OLDDIR="$DIR/backup/"             # old dotfiles backup directory
 FILE_DIR="$DIR/files"
 
+LOCALES=("en_US.UTF-8", "nl_NL.UTF-8")
+
 # packages to be installed
 packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip"
 pip_packages="ranger-fm Pygments"
@@ -126,12 +128,13 @@ set_zsh_default () {
   fi
 }
 
-install_up () {
-    if [[ ! -f ~/.local/bin/up ]]; then
-        wget https://github.com/akavel/up/releases/latest/download/up -O ~/.local/bin/up
-        chmod +x ~?.local/bin/up
-    fi
+set_locale () {
+    for localein ${LOCALES[@]}; do
+      sudo sed -i '/$locale/s/^#\ //g' /etc/locale.gen
+    done
+    sudo locale-gen
 }
+
 
 # a_flag=''
 # b_flag=''
@@ -158,6 +161,8 @@ install_up () {
 #TODO: git settings
 #TODO: asdf?
 #TODO: nvm
+
+set_locale
 install_packages
 install_pip_packages
 place_dotfiles
