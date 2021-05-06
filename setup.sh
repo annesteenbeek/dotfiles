@@ -129,8 +129,8 @@ set_zsh_default () {
 }
 
 set_locale () {
-    for localein ${LOCALES[@]}; do
-      sudo sed -i '/$locale/s/^#\ //g' /etc/locale.gen
+    for locale in "${LOCALES[@]}"; do
+      sudo sed -i "/$locale/s/^#\ //g" /etc/locale.gen
     done
     sudo locale-gen
 }
