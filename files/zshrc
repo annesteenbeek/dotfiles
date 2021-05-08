@@ -79,7 +79,8 @@ function ranger-cd {
     /home/$USER/.local/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
     test -f "$tempfile" &&
     if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
-        cd -- "$(cat "$tempfile")"
+        # cd -- "$(cat "$tempfile")"
+        cd "$(cat "$tempfile")"
     fi  
     rm -f -- "$tempfile"
 }
@@ -92,9 +93,9 @@ bindkey '^x' edit-command-line
 export PATH="/usr/local/cuda/bin:$PATH"
 export MANPATH=/usr/local/cuda/man:${MANPATH}
 
-if [[ -d "/opt/ros" ]]; then
-    source ~/.rosrc
-fi
+# if [[ -d "/opt/ros" ]]; then
+    # source ~/.rosrc
+# fi
 
 # Use android studio adb if available
 if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
