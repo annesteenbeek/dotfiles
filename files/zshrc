@@ -134,6 +134,7 @@ alias tree='tree -L 3 --filelimit 20 -h'
 alias c='fasd -e code -d'
 alias less='cless' # colored less 
 alias dc='docker-compose'
+alias ip='ip -c -iec'
 
 # use LSD if installed
 if command -v lsd &> /dev/null; then
