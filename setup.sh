@@ -8,22 +8,42 @@ FILE_DIR="$DIR/files"
 LOCALES=("en_US.UTF-8", "nl_NL.UTF-8")
 
 # packages to be installed
-packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip"
+apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip"
+brew_packages="tmux source-highlight vim htop xclip"
 pip_packages="ranger-fm Pygments"
 
-setup_colors() {
-  if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
-    NOCOLOR='\033[0m' RED='\033[0;31m' GREEN='\033[0;32m' ORANGE='\033[0;33m' BLUE='\033[0;34m' PURPLE='\033[0;35m' CYAN='\033[0;36m' YELLOW='\033[1;33m'
-  else
-    NOCOLOR='' RED='' GREEN='' ORANGE='' BLUE='' PURPLE='' CYAN='' YELLOW=''
-  fi
-}
-setup_colors
+if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
+  NOCOLOR='\033[0m' RED='\033[0;31m' GREEN='\033[0;32m' ORANGE='\033[0;33m' BLUE='\033[0;34m' PURPLE='\033[0;35m' CYAN='\033[0;36m' YELLOW='\033[1;33m'
+else
+  NOCOLOR='' RED='' GREEN='' ORANGE='' BLUE='' PURPLE='' CYAN='' YELLOW=''
+fi
 
 msg() {
   echo >&2 -e "${1-}"
 }
 
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  MACHINE="debian"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  MACHINE="osx"
+fi
+msg "${PURPLE}Machine type: $MACHINE${NOCOLOR}"
+
+install_packages () {
+    if [ "$MACHINE" == "debian" ]; then
+      msg "${GREEN}Installing packages: $apt_packages${NOCOLOR}"
+      sudo apt-get update
+      sudo apt install -y -q $apt_packages
+    elif [ "$MACHINE" == "osx" ]; then 
+      for formula in $brew_packages; do
+        if brew ls --versions myformula > /dev/null; then
+          msg "${BLUE}Formula $formula is already installed.{NOCOLOR}"
+        else
+          brew install $formula
+        fi
+      done;
+    fi
+}
 
 place_dotfiles() {
     msg "${GREEN}Linking dotfiles${NOCOLOR}"
@@ -54,23 +74,19 @@ place_dotfiles() {
         ln -s "$source_path" "$dest"
         msg "${GREEN}Linking $file_path ${NOCOLOR}"
       fi
-
-
     done
 }
 
 install_lsd () {
   if [[ ! -x "$(command -v lsd)" ]]; then
-    msg "${GREEN}Installing lsd${NOCOLOR}"
-    wget https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd_0.20.1_amd64.deb -O /tmp/lsd.deb
-    sudo dpkg -i /tmp/lsd.deb
+    if [ $MACHINE == "debian" ]; then
+      msg "${GREEN}Installing lsd${NOCOLOR}"
+      wget https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd_0.20.1_amd64.deb -O /tmp/lsd.deb
+      sudo dpkg -i /tmp/lsd.deb
+    elif [ $MACHINE == "osx" ]; then
+      brew install lsd
+    fi
   fi
-}
-
-install_packages () {
-    msg "${GREEN}Installing packages: $packages${NOCOLOR}"
-    sudo apt-get update
-    sudo apt install -y -q $packages
 }
 
 install_pip_packages () {
@@ -129,10 +145,12 @@ set_zsh_default () {
 }
 
 set_locale () {
+  if [ $MACHINE == "debian" ]; then
     for locale in "${LOCALES[@]}"; do
       sudo sed -i "/$locale/s/^#\ //g" /etc/locale.gen
     done
     sudo locale-gen
+  fi;
 }
 
 
