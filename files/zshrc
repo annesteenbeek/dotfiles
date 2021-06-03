@@ -53,7 +53,7 @@ zle_highlight+=(paste:none)
 # make sure ~/.npm-packages exists
 export NPM_PACKAGES="${HOME}/.npm-packages"
 export PATH="$HOME/.npm-packages/bin:$PATH"
-export PATH="$PATH:~/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
