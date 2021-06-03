@@ -9,7 +9,7 @@ LOCALES=("en_US.UTF-8", "nl_NL.UTF-8")
 
 # packages to be installed
 apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip"
-brew_packages="tmux source-highlight vim htop xclip"
+brew_packages="tmux source-highlight vim htop xclip cmake"
 pip_packages="ranger-fm Pygments"
 
 if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
@@ -147,7 +147,9 @@ set_zsh_default () {
 set_locale () {
   if [ $MACHINE == "debian" ]; then
     for locale in "${LOCALES[@]}"; do
-      sudo sed -i "/$locale/s/^#\ //g" /etc/locale.gen
+    #  sudo sed -i "/$locale/s/^#\ //g" /etc/locale.gen
+        file="/etc/locale.gen"
+        grep -qxF "$locale" $file || sudo echo "$locale" >> $file
     done
     sudo locale-gen
   fi;
