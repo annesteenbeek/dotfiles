@@ -55,7 +55,7 @@ zle_highlight+=(paste:none)
 # make sure ~/.npm-packages exists
 export NPM_PACKAGES="${HOME}/.npm-packages"
 export PATH="$HOME/.npm-packages/bin:$PATH"
-export PATH="$PATH:~/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -78,7 +78,7 @@ function ranger-cd {
     tempfile="$(mktemp -t tmp.XXXXXX)"
     # /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
     # TODO: find ranger
-    /home/$USER/.local/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    ranger --choosedir="$tempfile" "${@:-$(pwd)}"
     test -f "$tempfile" &&
     if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
         # cd -- "$(cat "$tempfile")"
