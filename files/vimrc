@@ -127,6 +127,9 @@ vnoremap > >gv
 vmap Q gq
 nmap Q gqap
 
+" set multicursor to be same as vscode
+" let g:multi_cursor_start_word_key = 'gb'
+
 " --------- Plugin settings --------
 " Nerdtree
 let NERDTreeIgnore = ['\.pyc$'] " Hide .pyc files

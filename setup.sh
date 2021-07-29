@@ -5,10 +5,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 OLDDIR="$DIR/backup/"             # old dotfiles backup directory
 FILE_DIR="$DIR/files"
 
-LOCALES=("en_US.UTF-8", "nl_NL.UTF-8")
+LOCALES=("en_US.UTF-8 UTF-8", "nl_NL.UTF-8 UTF-8")
 
 # packages to be installed
-packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip"
+packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv"
 pip_packages="ranger-fm Pygments"
 
 setup_colors() {
@@ -60,7 +60,7 @@ place_dotfiles() {
 }
 
 install_lsd () {
-  if [[ ! -x "$(command -v lsd)" ]]; then
+    if [[ ! -x "$(command -v lsd)" ]] && [[ "$(uname -i)" == "x86_64" ]]; then
     msg "${GREEN}Installing lsd${NOCOLOR}"
     wget https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd_0.20.1_amd64.deb -O /tmp/lsd.deb
     sudo dpkg -i /tmp/lsd.deb
@@ -130,11 +130,17 @@ set_zsh_default () {
 
 set_locale () {
     for locale in "${LOCALES[@]}"; do
-      sudo sed -i "/$locale/s/^#\ //g" /etc/locale.gen
+        grep -qxF '$locale' /etc/locale.gen || echo '$locale' >> /etc/locale.gen 
+      # sudo sed -i "/$locale/s/^#\ //g" /etc/locale.gen
     done
     sudo locale-gen
 }
 
+install_pyenv () {
+    if [[ ! -d "~/.pyenv" ]]; then 
+        curl https://pyenv.run | bash
+    fi
+}
 
 # a_flag=''
 # b_flag=''
