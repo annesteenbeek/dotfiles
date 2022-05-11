@@ -79,7 +79,8 @@ place_dotfiles() {
 
 install_lsd () {
   if [[ ! -x "$(command -v lsd)" ]]; then
-    if [ $MACHINE == "debian" ] && [ uname -m == "x86_64" ]; then
+    UNAME=$(uname -m);
+    if [ "$MACHINE" == "debian" ] && [ "$UNAME" == "x86_64" ]; then
       msg "${GREEN}Installing lsd${NOCOLOR}"
       wget https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd_0.20.1_amd64.deb -O /tmp/lsd.deb
       sudo dpkg -i /tmp/lsd.deb
