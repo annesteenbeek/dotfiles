@@ -41,6 +41,7 @@ export TERM=screen-256color
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export ALL=en_US.UTF-8
+# export LC_NUMERIC=en_US.UTF-8
 
 # History
 setopt HIST_IGNORE_DUPS
@@ -95,9 +96,6 @@ bindkey '^x' edit-command-line
 export PATH="/usr/local/cuda/bin:$PATH"
 export MANPATH=/usr/local/cuda/man:${MANPATH}
 
-if [[ -d "/opt/ros" ]]; then
-    source ~/.rosrc
-fi
 
 # Use android studio adb if available
 if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
@@ -138,7 +136,7 @@ alias less='cless' # colored less
 alias dc='docker-compose'
 alias ip='ip -c -iec'
 # compdef _ssh color-ssh=ssh
-alias ssh="$HOME/scripts/color-ssh"
+# alias ssh="$HOME/scripts/color-ssh"
 alias gs="git status"
 
 alias awsume=". awsume"
@@ -158,7 +156,13 @@ if [[ -d "~/.pyenv" ]]; then
 fi
 
 # Freqtrade TA
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+# export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+if [[ -d "/opt/ros" ]]; then
+    source ~/.rosrc
+    # source ~/.rosrc2
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
