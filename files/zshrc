@@ -21,6 +21,7 @@ antigen bundle fzf
 antigen bundle wookayin/fzf-fasd
 antigen bundle git-prompt
 antigen bundle direnv
+antigen bundle per-directory-history
 # antigen bundle marlonrichert/zsh-autocomplete
 
 # workaround for https://github.com/zsh-users/antigen/issues/675
@@ -47,6 +48,7 @@ export ALL=en_US.UTF-8
 setopt HIST_IGNORE_DUPS
 setopt SHARE_HISTORY
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
+export HISTORY_START_WITH_GLOBAL=true
 
 # disable pasted text highlighting
 zle_highlight+=(paste:none)
@@ -149,7 +151,7 @@ if command -v lsd &> /dev/null; then
 fi
 
 # pyenv
-if [[ -d "~/.pyenv" ]]; then
+if [[ -d "$HOME/.pyenv" ]]; then
     export PATH="$HOME/.pyenv/bin:$PATH"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
@@ -166,3 +168,4 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
