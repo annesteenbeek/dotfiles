@@ -20,6 +20,8 @@ antigen bundle fasd
 antigen bundle fzf
 antigen bundle wookayin/fzf-fasd
 antigen bundle git-prompt
+antigen bundle direnv
+antigen bundle per-directory-history
 antigen bundle fancy-ctrl-z
 
 # workaround for https://github.com/zsh-users/antigen/issues/675
@@ -36,15 +38,18 @@ zstyle ':completion:*' menu select
 export EDITOR=vim ranger
 export PAGER=cless less
 export TERM=screen-256color
+# export TERM=screen-256color-bce
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
+# export LC_NUMERIC=en_US.UTF-8
 
 # History
 setopt HIST_IGNORE_DUPS
 setopt SHARE_HISTORY
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
+export HISTORY_START_WITH_GLOBAL=true
 
 # disable pasted text highlighting
 zle_highlight+=(paste:none)
@@ -54,7 +59,7 @@ zle_highlight+=(paste:none)
 # make sure ~/.npm-packages exists
 export NPM_PACKAGES="${HOME}/.npm-packages"
 export PATH="$HOME/.npm-packages/bin:$PATH"
-export PATH="$PATH:~/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -102,9 +107,6 @@ bindkey '^x' edit-command-line
 export PATH="/usr/local/cuda/bin:$PATH"
 export MANPATH=/usr/local/cuda/man:${MANPATH}
 
-# if [[ -d "/opt/ros" ]]; then
-    # source ~/.rosrc
-# fi
 
 # Use android studio adb if available
 if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
@@ -144,14 +146,35 @@ alias c='fasd -e code -d'
 alias less='cless' # colored less 
 alias dc='docker-compose'
 alias ip='ip -c -iec'
+# compdef _ssh color-ssh=ssh
+# alias ssh="$HOME/scripts/color-ssh"
+alias gs="git status"
+
+alias awsume=". awsume"
+
+
 
 # use LSD if installed
 if command -v lsd &> /dev/null; then
     alias ls='lsd --date=+"%Y-%m-%d %H:%M"'
 fi
 
+# pyenv
+if [[ -d "$HOME/.pyenv" ]]; then
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
+
 # Freqtrade TA
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+# export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+if [[ -d "/opt/ros" ]]; then
+    source ~/.rosrc
+    # source ~/.rosrc2
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
