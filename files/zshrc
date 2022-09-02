@@ -20,7 +20,7 @@ antigen bundle fasd
 antigen bundle fzf
 antigen bundle wookayin/fzf-fasd
 antigen bundle git-prompt
-# antigen bundle marlonrichert/zsh-autocomplete
+antigen bundle fancy-ctrl-z
 
 # workaround for https://github.com/zsh-users/antigen/issues/675
 # antigen theme denysdovhan/spaceship-prompt
@@ -39,6 +39,7 @@ export TERM=screen-256color
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export ALL=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
 
 # History
 setopt HIST_IGNORE_DUPS
@@ -57,6 +58,14 @@ export PATH="$PATH:~/.local/bin"
 
 export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# if command -v brew &> /dev/null; then
+  # "$(brew --prefix)/opt/nvm/nvm.sh" ] && . "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
+  # [ -s "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" ] && . "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
+# else
+  # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# fi
+
+
 
 # Plugin conf -----------------
 _FASD_DATA="$HOME/.fasd_history"
