@@ -8,8 +8,8 @@ FILE_DIR="$DIR/files"
 LOCALES=("en_US.UTF-8" "nl_NL.UTF-8")
 
 # packages to be installed
-apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv"
-brew_packages="tmux source-highlight vim htop xclip cmake"
+apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck"
+brew_packages="tmux source-highlight vim htop xclip cmake shellcheck"
 pip_packages="ranger-fm Pygments"
 
 if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
@@ -151,8 +151,8 @@ set_locale () {
     #  sudo sed -i "/$locale/s/^#\ //g" /etc/locale.gen
         file="/etc/locale.gen"
 	if ! grep -qxF "$locale" $file; then
-            # sudo bash -C "echo $locale >> $file"
-           echo "$locale UTF-8" | sudo tee -a "$file"
+        # sudo bash -C "echo $locale >> $file"
+        echo "$locale UTF-8" | sudo tee -a "$file"
 	fi	
     done
     sudo locale-gen
@@ -162,6 +162,7 @@ set_locale () {
 install_pyenv () {
     if [[ ! -d "~/.pyenv" ]]; then 
         curl https://pyenv.run | bash
+        git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
     fi
 }
 
@@ -194,6 +195,7 @@ install_pyenv () {
 set_locale
 install_packages
 install_pip_packages
+install_pyenv
 place_dotfiles
 install_antigen
 install_fzf
