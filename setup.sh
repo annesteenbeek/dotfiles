@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 OLDDIR="$DIR/backup/"             # old dotfiles backup directory
 FILE_DIR="$DIR/files"
 
-LOCALES=("en_US.UTF-8" "nl_NL.UTF-8")
+LOCALES="en_US.UTF-8 nl_NL.UTF-8"
 
 # packages to be installed
 apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck"
@@ -147,22 +147,15 @@ set_zsh_default () {
 
 set_locale () {
   if [ $MACHINE == "debian" ]; then
-    for locale in "${LOCALES[@]}"; do
-    #  sudo sed -i "/$locale/s/^#\ //g" /etc/locale.gen
-        file="/etc/locale.gen"
-	if ! grep -qxF "$locale" $file; then
-        # sudo bash -C "echo $locale >> $file"
-        echo "$locale UTF-8" | sudo tee -a "$file"
-	fi	
-    done
-    sudo locale-gen
+    sudo locale-gen $LOCALES
+    sudo update-locale
   fi;
 }
 
 install_pyenv () {
-    if [[ ! -d "~/.pyenv" ]]; then 
+    if [[ ! -d "$HOME/.pyenv" ]]; then 
         curl https://pyenv.run | bash
-        git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
+        #git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
     fi
 }
 
