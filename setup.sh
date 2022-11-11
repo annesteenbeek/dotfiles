@@ -201,4 +201,5 @@ install_vim_plugins
 install_tmux_plugins
 install_ranger_plugins
 install_lsd
+install_pyenv
 set_zsh_default

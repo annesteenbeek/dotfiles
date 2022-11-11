@@ -36,7 +36,8 @@ typeset -g POWERLEVEL9K_TIME_ICON=""
 zstyle ':completion:*' menu select 
 
 export EDITOR=vim ranger
-export PAGER=cless less
+export PAGER=bat less
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export TERM=screen-256color
 # export TERM=screen-256color-bce
 export LANG=en_US.UTF-8
@@ -60,8 +61,8 @@ export NPM_PACKAGES="${HOME}/.npm-packages"
 export PATH="$HOME/.npm-packages/bin:$PATH"
 export PATH="$PATH:$HOME/.local/bin"
 
-export NVM_DIR="${HOME}/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# export NVM_DIR="${HOME}/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # Plugin conf -----------------
 _FASD_DATA="$HOME/.fasd_history"
@@ -134,9 +135,10 @@ alias dirs='dirs -v'
 alias d='dirs -v'
 alias tree='tree -L 3 --filelimit 20 -h'
 alias c='fasd -e code -d'
-alias less='cless' # colored less 
+# alias less='cless' # colored less 
 alias dc='docker-compose'
 alias ip='ip -c -iec'
+alias l='ls -lAh'
 # compdef _ssh color-ssh=ssh
 # alias ssh="$HOME/scripts/color-ssh"
 alias gs="git status"
