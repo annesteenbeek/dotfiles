@@ -8,7 +8,7 @@ FILE_DIR="$DIR/files"
 LOCALES="en_US.UTF-8 nl_NL.UTF-8"
 
 # packages to be installed
-apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck"
+apt_packages="zsh tmux source-highlight vim neovim python3-pip build-essential curl htop xclip direnv shellcheck bat"
 brew_packages="tmux source-highlight vim htop xclip cmake shellcheck"
 pip_packages="ranger-fm Pygments"
 
@@ -179,11 +179,10 @@ install_pyenv () {
 #   esac
 # done
 
-
-#TODO: --gui tag that installs patched nerdfonts, 
 #TODO: git settings
 #TODO: asdf?
 #TODO: nvm
+#TODO: neovim (config init, plugin install)
 
 set_locale
 install_packages
