@@ -17,13 +17,13 @@ antigen bundle colorize
 antigen bundle colored-man-pages
 antigen bundle command-not-found
 antigen bundle clvv/fasd fasd
-antigen bundle fasd
 antigen bundle fzf
 antigen bundle wookayin/fzf-fasd
 antigen bundle git-prompt
 antigen bundle direnv
 antigen bundle per-directory-history
 antigen bundle fancy-ctrl-z
+antigen bundle Tarrasch/zsh-autoenv
 
 # workaround for https://github.com/zsh-users/antigen/issues/675
 # antigen theme denysdovhan/spaceship-prompt
@@ -36,7 +36,6 @@ typeset -g POWERLEVEL9K_TIME_ICON=""
 zstyle ':completion:*' menu select 
 zle_highlight+=(paste:none) # disable pasted text highlighting
 
-# History
 setopt HIST_IGNORE_DUPS
 setopt SHARE_HISTORY
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
@@ -53,7 +52,7 @@ export LC_CTYPE=en_US.UTF-8
 # export LC_NUMERIC=en_US.UTF-8
 
 
-#################### Plugin conf  ################## eval "$(fasd --init auto)" # initialize fasd
+#################### Plugin conf  ################## 
 _FASD_DATA="$HOME/.fasd_history"
 DISABLE_AUTO_TITLE="true"
 DISABLE_AUTO_UPDATE="true"
@@ -65,6 +64,7 @@ FZF_FASD_OPTS='--preview "ls -1  {}"'
 # export FZF_TMUX_OPTS=-p # tmux popup for fzf
 # export FZF_DEFAULT_COMMAND="fd --type f"
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+eval "$(fasd --init auto)" # initialize fasd
 
 ######################### Personal scripts ############################
 # cd/bd using pusdh, popd https://mhoffman.github.io/2015/05/21/how-to-navigate-directories-with-the-shell.html
@@ -159,7 +159,6 @@ fi
 
 # ROS
 if [[ -d "/opt/ros" ]]; then
-    source /opt/ros/noetic/share/rosbash/roszsh # only load roszsh for autocomplete so we can use direnv
     # source ~/.rosrc
     # source ~/.rosrc2
 fi
