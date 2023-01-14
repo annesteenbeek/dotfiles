@@ -9,7 +9,7 @@ LOCALES=("en_US.UTF-8" "nl_NL.UTF-8")
 
 # packages to be installed
 apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck"
-brew_packages="tmux source-highlight vim htop xclip cmake shellcheck"
+brew_packages="tmux source-highlight vim htop xclip cmake shellcheck direnv"
 pip_packages="ranger-fm Pygments"
 
 if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
