@@ -10,108 +10,63 @@ source ~/.antigen/antigen.zsh
 antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-completions
 antigen bundle arzzen/calc.plugin.zsh
 antigen bundle git
 antigen bundle colorize 
 antigen bundle colored-man-pages
 antigen bundle command-not-found
 antigen bundle clvv/fasd fasd
-antigen bundle fasd
 antigen bundle fzf
 antigen bundle wookayin/fzf-fasd
 antigen bundle git-prompt
 antigen bundle direnv
 antigen bundle per-directory-history
 antigen bundle fancy-ctrl-z
+antigen bundle Tarrasch/zsh-autoenv
 
 # workaround for https://github.com/zsh-users/antigen/issues/675
 # antigen theme denysdovhan/spaceship-prompt
 THEME=romkatv/powerlevel10k
 antigen list | grep $THEME; if [ $? -ne 0 ]; then antigen theme $THEME; fi
-# antigen theme romkatv/powerlevel10k
-antigen apply
+antigen apply # antigen theme romkatv/powerlevel10k
 
+##################### ZSH Settings #############################
 typeset -g POWERLEVEL9K_TIME_ICON=""
-
 zstyle ':completion:*' menu select 
+zle_highlight+=(paste:none) # disable pasted text highlighting
+
+setopt HIST_IGNORE_DUPS
+setopt SHARE_HISTORY
+export ZSH_AUTOSUGGEST_USE_ASYNC=1
+export HISTORY_START_WITH_GLOBAL=true
 
 export EDITOR=vim ranger
-export PAGER=cless less
+export PAGER=cat less
+# export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 export TERM=screen-256color
-# export TERM=screen-256color-bce
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 # export LC_NUMERIC=en_US.UTF-8
 
-# History
-setopt HIST_IGNORE_DUPS
-setopt SHARE_HISTORY
-export ZSH_AUTOSUGGEST_USE_ASYNC=1
-export HISTORY_START_WITH_GLOBAL=true
 
-# disable pasted text highlighting
-zle_highlight+=(paste:none)
-
-# Store npm packages in user space, no root
-# might need to add prefix=${HOME}/.npm-packages to ~/.npmrc
-# make sure ~/.npm-packages exists
-export NPM_PACKAGES="${HOME}/.npm-packages"
-export PATH="$HOME/.npm-packages/bin:$PATH"
-export PATH="$PATH:$HOME/.local/bin"
-
-export NVM_DIR="${HOME}/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm
-
-# if command -v brew &> /dev/null; then
-  # "$(brew --prefix)/opt/nvm/nvm.sh" ] && . "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
-  # [ -s "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" ] && . "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
-# else
-  # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# fi
-
-
-# Plugin conf -----------------
+#################### Plugin conf  ################## 
 _FASD_DATA="$HOME/.fasd_history"
 DISABLE_AUTO_TITLE="true"
 DISABLE_AUTO_UPDATE="true"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
-# initialize fasd
-eval "$(fasd --init auto)"
 
 FZF_DEFAULT_OPS="--extended --history-size=$HISTSIZE"
+FZF_FASD_OPTS='--preview "ls -1  {}"'
+
 # export FZF_TMUX_OPTS=-p # tmux popup for fzf
 # export FZF_DEFAULT_COMMAND="fd --type f"
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+eval "$(fasd --init auto)" # initialize fasd
 
-# use ctrl+o to navigate directories in ranger
-function ranger-cd {
-    tempfile="$(mktemp -t tmp.XXXXXX)"
-    # /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
-    # TODO: find ranger
-    ranger --choosedir="$tempfile" "${@:-$(pwd)}"
-    test -f "$tempfile" &&
-    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
-        # cd -- "$(cat "$tempfile")"
-        cd "$(cat "$tempfile")"
-    fi  
-    rm -f -- "$tempfile"
-}
-bindkey -s '^O' 'ranger-cd\n'
-
-autoload edit-command; zle -N edit-command-line
-bindkey '^x' edit-command-line
-
-# add cuda tools to command path
-export PATH="/usr/local/cuda/bin:$PATH"
-export MANPATH=/usr/local/cuda/man:${MANPATH}
-
-# Use android studio adb if available
-if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
-    alias adb="$HOME/Android/Sdk/platform-tools/adb" 
-fi
-
+######################### Personal scripts ############################
 # cd/bd using pusdh, popd https://mhoffman.github.io/2015/05/21/how-to-navigate-directories-with-the-shell.html
 function cd() {
   if [ "$#" = "0" ]
@@ -137,24 +92,54 @@ function bd(){
   fi
 }
 
-alias clc='clear'
+# use ctrl+o to navigate directories in ranger
+function ranger-cd {
+    tempfile="$(mktemp -t tmp.XXXXXX)"
+    # /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    # TODO: find ranger
+    ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    test -f "$tempfile" &&
+    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+        # cd -- "$(cat "$tempfile")"
+        cd "$(cat "$tempfile")"
+    fi  
+    rm -f -- "$tempfile"
+}
+bindkey -s '^O' 'ranger-cd\n'
+
+# ctrl+x edit command
+autoload edit-command; zle -N edit-command-line
+bindkey '^x' edit-command-line
+
+########################## Aiases ############################
 alias dirs='dirs -v'
 alias d='dirs -v'
 alias tree='tree -L 3 --filelimit 20 -h'
 alias c='fasd -e code -d'
-alias less='cless' # colored less 
+# alias less='cless' # colored less 
 alias dc='docker-compose'
 alias ip='ip -c -iec'
-# compdef _ssh color-ssh=ssh
-# alias ssh="$HOME/scripts/color-ssh"
-alias gs="git status"
+alias l='ls -lAh'
 alias awsume=". awsume"
+
+# Use batcat if installed
+if command -v batcat &> /dev/null; then
+    alias bat="batcat"
+    alias cat="batcat --paging=never --plain"
+fi
 
 # use LSD if installed
 if command -v lsd &> /dev/null; then
     alias ls='lsd --date=+"%Y-%m-%d %H:%M"'
 fi
 
+# use neovim if installed
+if command -v nvim &> /dev/null; then
+    alias vim='nvim'
+fi
+
+
+########################### Setup external tools #####################
 # pyenv
 if [[ -d "$HOME/.pyenv" ]]; then
     export PYENV_ROOT="$HOME/.pyenv"
@@ -164,15 +149,35 @@ if [[ -d "$HOME/.pyenv" ]]; then
     eval "$(pyenv init -)"
 fi
 
+# Use android studio adb if available
+if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
+    alias adb="$HOME/Android/Sdk/platform-tools/adb" 
+fi
+
 # Freqtrade TA
 # export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
+# ROS
 if [[ -d "/opt/ros" ]]; then
-    source ~/.rosrc
+    # source ~/.rosrc
     # source ~/.rosrc2
 fi
 
+# Store npm packages in user space, no root
+# make sure ~/.npm-packages exists
+export NPM_PACKAGES="${HOME}/.npm-packages"
+export PATH="$HOME/.npm-packages/bin:$PATH"
+export PATH="$PATH:$HOME/.local/bin"
+
+# export NVM_DIR="${HOME}/.nvm"
+# # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm (slow)
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# add cuda tools to command path
+export PATH="/usr/local/cuda/bin:$PATH"
+export MANPATH=/usr/local/cuda/man:${MANPATH}
+
+#################### FINAL ############################
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -21,7 +21,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'sickill/vim-monokai'
 Plug 'tpope/vim-surround'
-Plug 'raimondi/delimitmate'
+" Plug 'raimondi/delimitmate'
 Plug 'w0rp/ale' " Syntax linting
 Plug 'kshenoy/vim-signature' " shows nav marks in the gutter
 Plug 'majutsushi/tagbar'
