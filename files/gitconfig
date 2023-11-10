@@ -3,7 +3,7 @@
 	email = annesteenbeek@gmail.com
 	signingkey = 341F5FFED24BEC35
 [init]
-	defaultBranch = {branchName}
+	defaultBranch = master
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
