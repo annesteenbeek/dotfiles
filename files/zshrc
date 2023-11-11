@@ -61,7 +61,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 
 FZF_DEFAULT_OPS="--extended --history-size=$HISTSIZE"
 FZF_FASD_OPTS='--preview "lsd -1 --color=always --icon=always --tree --depth 1 {}"'
-# FZF_FASD_OPTS='--preview "batcat --style=numbers --color=always --line-range :500 {}"'
 
 # export FZF_TMUX_OPTS=-p # tmux popup for fzf
 # export FZF_DEFAULT_COMMAND="fd --type f"
@@ -155,15 +154,6 @@ if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
     alias adb="$HOME/Android/Sdk/platform-tools/adb" 
 fi
 
-# Freqtrade TA
-# export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-
-# ROS
-if [[ -d "/opt/ros" ]]; then
-    # source ~/.rosrc
-    # source ~/.rosrc2
-fi
-
 # Store npm packages in user space, no root
 # make sure ~/.npm-packages exists
 export NPM_PACKAGES="${HOME}/.npm-packages"
@@ -182,7 +172,7 @@ export MANPATH=/usr/local/cuda/man:${MANPATH}
 # add rust cargo dir
 export PATH="$HOME/.cargo/bin:$PATH"
 # TensorRT
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/TensorRT/lib
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/TensorRT/lib"
 export PATH="$PATH:/opt/ngc-cli"
 
 # Disable direnv verbosity
