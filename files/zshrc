@@ -19,7 +19,7 @@ antigen bundle fzf
 antigen bundle wookayin/fzf-fasd
 antigen bundle git-prompt
 antigen bundle direnv
-antigen bundle per-directory-history
+antigen bundle jimhester/per-directory-history
 antigen bundle fancy-ctrl-z
 antigen bundle Tarrasch/zsh-autoenv
 
@@ -33,8 +33,7 @@ zle_highlight+=(paste:none) # disable pasted text highlighting
 
 setopt HIST_IGNORE_DUPS
 setopt SHARE_HISTORY
-export ZSH_AUTOSUGGEST_USE_ASYNC=1
-export HISTORY_START_WITH_GLOBAL=true
+setopt GLOB_COMPLETE
 export HISTSIZE=100000
 export SAVEHIST=$HISTSIZE
 export EDITOR=vim ranger
@@ -46,16 +45,16 @@ export LANGUAGE=en_US.UTF-8
 export ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 # export LC_NUMERIC=en_US.UTF-8
-setopt GLOB_COMPLETE
 
 #################### Plugin conf  ################## 
 _FASD_DATA="$HOME/.fasd_history"
 DISABLE_AUTO_TITLE="true"
 DISABLE_AUTO_UPDATE="true"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+HISTORY_START_WITH_GLOBAL=true
 
 FZF_DEFAULT_OPS="--extended --history-size=$HISTSIZE"
-FZF_FASD_OPTS='--preview "lsd -1 --color=always --icon=always --tree --depth 1 {}"'
+FZF_FASD_OPTS='--preview "lsd {} -1 --color=always --icon=always --tree --depth 1"'
 
 # export FZF_TMUX_OPTS=-p # tmux popup for fzf
 # export FZF_DEFAULT_COMMAND="fd --type f"
@@ -88,7 +87,6 @@ alias d='dirs -v'
 alias tree='tree -L 3 --filelimit 20 -h'
 alias c='fasd -e code -d'
 alias v='fasd -e vim -f'
-# alias less='cless' # colored less 
 alias dc='docker-compose'
 alias ip='ip -c -iec'
 alias l='ls -lAh'
@@ -110,7 +108,6 @@ fi
 if command -v nvim &> /dev/null; then
     alias vim='nvim'
 fi
-
 
 ########################### Setup external tools #####################
 # pyenv
