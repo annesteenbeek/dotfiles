@@ -1,6 +1,4 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -25,14 +23,11 @@ antigen bundle per-directory-history
 antigen bundle fancy-ctrl-z
 antigen bundle Tarrasch/zsh-autoenv
 
-# workaround for https://github.com/zsh-users/antigen/issues/675
-# antigen theme denysdovhan/spaceship-prompt
-THEME=romkatv/powerlevel10k
-antigen list | grep $THEME; if [ $? -ne 0 ]; then antigen theme $THEME; fi
+antigen theme romkatv/powerlevel10k
+
 antigen apply # antigen theme romkatv/powerlevel10k
 
 ##################### ZSH Settings #############################
-typeset -g POWERLEVEL9K_TIME_ICON=""
 zstyle ':completion:*' menu select 
 zle_highlight+=(paste:none) # disable pasted text highlighting
 
@@ -68,31 +63,6 @@ FZF_FASD_OPTS='--preview "lsd -1 --color=always --icon=always --tree --depth 1 {
 eval "$(fasd --init auto)" # initialize fasd
 
 ######################### Personal scripts ############################
-# cd/bd using pusdh, popd https://mhoffman.github.io/2015/05/21/how-to-navigate-directories-with-the-shell.html
-function cd() {
-  if [ "$#" = "0" ]
-  then
-  pushd ${HOME} > /dev/null
-  elif [ -f "${1}" ]
-  then
-    ${EDITOR} ${1}
-  else
-  pushd "$1" > /dev/null
-  fi
-}
-
-function bd(){
-  if [ "$#" = "0" ]
-  then
-    popd > /dev/null
-  else
-    for i in $(seq ${1})
-    do
-      popd > /dev/null
-    done
-  fi
-}
-
 # use ctrl+o to navigate directories in ranger
 function ranger-cd {
     tempfile="$(mktemp -t tmp.XXXXXX)"
@@ -123,6 +93,7 @@ alias dc='docker-compose'
 alias ip='ip -c -iec'
 alias l='ls -lAh'
 alias r='ros2'
+alias -- -="cd -"
 
 # Use batcat if installed
 if command -v batcat &> /dev/null; then
@@ -146,12 +117,13 @@ fi
 if [[ -d "$HOME/.pyenv" ]]; then
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
 fi
 
 # Use android studio adb if available
 if [[ -f "$HOME/Android/Sdk/platform-tools/adb" ]]; then
-    alias adb="$HOME/Android/Sdk/platform-tools/adb" 
+    alias adb='$HOME/Android/Sdk/platform-tools/adb' 
 fi
 
 # Store npm packages in user space, no root
