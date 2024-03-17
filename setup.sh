@@ -12,15 +12,17 @@ apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl hto
 brew_packages="tmux source-highlight vim htop xclip cmake shellcheck direnv"
 pip_packages="ranger-fm Pygments"
 
-RED_COLOR='\033[0;31m'
-GREEN_COLOR='\033[0;32m'
-GREEN_YELLOW='\033[1;33m'
-NO_COLOR='\033[0m'
+# Set Colors and print statemetns
+if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
+  NO_COLOR='\033[0m' RED='\033[0;31m' GREEN='\033[0;32m' ORANGE='\033[0;33m' BLUE='\033[0;34m' PURPLE='\033[0;35m' CYAN='\033[0;36m' YELLOW='\033[1;33m'
+else
+  NO_COLOR='' RED='' GREEN='' ORANGE='' BLUE='' PURPLE='' CYAN='' YELLOW=''
+fi
+function info () { echo -e "${GREEN}INFO: $1${NO_COLOR}";}
+function warn () { echo -e "${YELLOW}WARN: $1${NO_COLOR}";}
+function error () { echo -e "${RED}ERROR: $1${NO_COLOR}"; if [ "$2" != "false" ]; then exit 1;fi; }
 
-function info () { echo -e "${GREEN_COLOR}INFO: $1${NO_COLOR}";}
-function warn () { echo -e "${GREEN_YELLOW}WARN: $1${NO_COLOR}";}
-function error () { echo -e "${RED_COLOR}ERROR: $1${NO_COLOR}"; if [ "$2" != "false" ]; then exit 1;fi; }
-
+# Scripts
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   MACHINE="debian"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -30,7 +32,7 @@ info "Machine type: $MACHINE"
 
 install_packages () {
     if [ "$MACHINE" == "debian" ]; then
-       info "Installing packages: $apt_packages"
+       info "Installing packages: ${PURPLE}$apt_packages"
       sudo apt-get update
       sudo apt install -y -q $apt_packages
     elif [ "$MACHINE" == "osx" ]; then 
