@@ -28,7 +28,9 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   MACHINE="osx"
 fi
+UNAME=$(uname -m);
 info "Machine type: $MACHINE"
+info "Architecture: $UNAME"
 
 install_packages () {
     if [ "$MACHINE" == "debian" ]; then
@@ -79,9 +81,12 @@ place_dotfiles() {
 install_lsd () {
   if [[ ! -x "$(command -v lsd)" ]]; then
     info "Installing LSD"
-    UNAME=$(uname -m);
-    if [ "$MACHINE" == "debian" ] && [ "$UNAME" == "x86_64" ]; then
-      wget https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd_0.20.1_amd64.deb -O /tmp/lsd.deb
+    if [ "$MACHINE" == "debian" ]; then
+      if [ "$UNAME" == "x86_64" ]; then
+          wget https://github.com/lsd-rs/lsd/releases/download/v1.1.2/lsd-musl_1.1.2_amd64.deb -O /tmp/lsd.deb
+      elif [ "$UNAME" == "aarch64" ]; then
+          wget https://github.com/lsd-rs/lsd/releases/download/v1.1.2/lsd-musl_1.1.2_arm64.deb -O /tmp/lsd.deb
+      fi
       sudo dpkg -i /tmp/lsd.deb
     elif [ $MACHINE == "osx" ]; then
       brew install lsd
