@@ -8,7 +8,7 @@ FILE_DIR="$DIR/files"
 LOCALES="en_US.UTF-8 nl_NL.UTF-8"
 
 # packages to be installed
-apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck bat"
+apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck bat pipx"
 brew_packages="tmux source-highlight vim htop xclip cmake shellcheck direnv"
 pip_packages="ranger-fm Pygments"
 
@@ -98,7 +98,7 @@ install_lsd () {
 
 install_pip_packages () {
   info "Installing pip packages: $pip_packages"
-  pip3 install $pip_packages
+  pipx install $pip_packages
 }
 
 install_vim_plugins () {

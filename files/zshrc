@@ -89,9 +89,10 @@ alias c='fasd -e code -d'
 alias v='fasd -e vim -f'
 alias dc='docker-compose'
 alias ip='ip -c -iec'
-alias l='ls -lAh'
+# alias l='ls -lAh'
 alias r='ros2'
 alias -- -="cd -"
+alias i='sudo apt install -y'
 
 # Use batcat if installed
 if command -v batcat &> /dev/null; then
