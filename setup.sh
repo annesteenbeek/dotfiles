@@ -8,7 +8,7 @@ FILE_DIR="$DIR/files"
 LOCALES="en_US.UTF-8 nl_NL.UTF-8"
 
 # packages to be installed
-apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck bat"
+apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck bat pipx"
 brew_packages="tmux source-highlight vim htop xclip cmake shellcheck direnv"
 pip_packages="ranger-fm Pygments"
 
@@ -28,7 +28,9 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   MACHINE="osx"
 fi
+UNAME=$(uname -m);
 info "Machine type: $MACHINE"
+info "Architecture: $UNAME"
 
 install_packages () {
     if [ "$MACHINE" == "debian" ]; then
@@ -79,9 +81,12 @@ place_dotfiles() {
 install_lsd () {
   if [[ ! -x "$(command -v lsd)" ]]; then
     info "Installing LSD"
-    UNAME=$(uname -m);
-    if [ "$MACHINE" == "debian" ] && [ "$UNAME" == "x86_64" ]; then
-      wget https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd_0.20.1_amd64.deb -O /tmp/lsd.deb
+    if [ "$MACHINE" == "debian" ]; then
+      if [ "$UNAME" == "x86_64" ]; then
+          wget https://github.com/lsd-rs/lsd/releases/download/v1.1.2/lsd-musl_1.1.2_amd64.deb -O /tmp/lsd.deb
+      elif [ "$UNAME" == "aarch64" ]; then
+          wget https://github.com/lsd-rs/lsd/releases/download/v1.1.2/lsd-musl_1.1.2_arm64.deb -O /tmp/lsd.deb
+      fi
       sudo dpkg -i /tmp/lsd.deb
     elif [ $MACHINE == "osx" ]; then
       brew install lsd
@@ -93,7 +98,7 @@ install_lsd () {
 
 install_pip_packages () {
   info "Installing pip packages: $pip_packages"
-  pip3 install $pip_packages
+  pipx install $pip_packages
 }
 
 install_vim_plugins () {
