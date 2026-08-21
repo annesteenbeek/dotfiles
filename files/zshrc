@@ -147,7 +147,14 @@ export PATH="$PATH:/opt/ngc-cli"
 # Disable direnv verbosity
 export DIRENV_LOG_FORMAT=
 
+# opencode
+export PATH=/home/anne/.opencode/bin:$PATH
+
+# Setup keychain for wsl
+eval "$(keychain --eval --quiet --agents ssh ~/.ssh/id_rsa)"
+
 #################### FINAL ############################
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 

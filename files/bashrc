@@ -120,3 +120,4 @@ fi
 
 # source /home/anne/.config/broot/launcher/bash/br
 eval "$(direnv hook bash)"
+. "$HOME/.cargo/env"
