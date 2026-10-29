@@ -37,8 +37,7 @@ setopt GLOB_COMPLETE
 export HISTSIZE=100000
 export SAVEHIST=$HISTSIZE
 export EDITOR=vim ranger
-# export PAGER=cat less
-# export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+export PAGER=less
 export TERM=screen-256color
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
@@ -61,6 +60,9 @@ FZF_FASD_OPTS='--preview "lsd {} -1 --color=always --icon=always --tree --depth 
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 eval "$(fasd --init auto)" # initialize fasd
 
+# dont auto update homebrew  apps
+export HOMEBREW_NO_AUTO_UPDATE=1
+
 ######################### Personal scripts ############################
 # use ctrl+o to navigate directories in ranger
 function ranger-cd {
@@ -76,6 +78,12 @@ function ranger-cd {
     rm -f -- "$tempfile"
 }
 bindkey -s '^O' 'ranger-cd\n'
+
+# reset stuck mouse-reporting mode left behind by a crashed/dropped ssh session
+function ssh {
+    command ssh "$@"
+    printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l\e[<10u\e[>4;0m'
+}
 
 # ctrl+x edit command
 autoload edit-command; zle -N edit-command-line
@@ -97,6 +105,14 @@ alias -- -="cd -"
 if command -v batcat &> /dev/null; then
     alias bat="batcat"
     alias cat="batcat --paging=never --plain"
+    export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+fi
+
+# called bat on OSX
+if command -v bat &> /dev/null; then
+    alias cat="bat --paging=never --plain"
+    alias less="bat"
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
 # use LSD if installed
@@ -131,7 +147,7 @@ export PATH="$PATH:$HOME/.local/bin"
 
 ## NVM
 export NVM_DIR="${HOME}/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm (slow)
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm (slow)
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # add cuda tools to command path

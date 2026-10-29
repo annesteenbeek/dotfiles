@@ -1,0 +1,118 @@
+# ~/.config/herdr/config.toml
+#
+# Herdr config modeled after ~/.tmux.conf
+
+onboarding = false
+
+[terminal]
+default_shell = "/bin/zsh"
+shell_mode = "auto"
+new_cwd = "follow"
+
+[keys]
+# tmux prefix: backtick
+prefix = "backtick"
+
+# Reload config: ` r
+reload_config = "prefix+r"
+
+# -------------------------------------------------------------------
+# Panes
+# -------------------------------------------------------------------
+
+# tmux:
+#   bind | split-window -h
+#   bind - split-window -v
+#
+# Herdr terminology:
+#   vertical   = side-by-side
+#   horizontal = stacked
+split_vertical = "prefix+|"
+split_horizontal = "prefix+minus"
+
+# Prefix-based pane movement as a fallback.
+focus_pane_left  = "prefix+h"
+focus_pane_down  = "prefix+j"
+focus_pane_up    = "prefix+k"
+focus_pane_right = "prefix+l"
+
+# Similar to tmux last-pane.
+last_pane = "prefix+backtick"
+
+# Zoom pane.
+zoom = "prefix+z"
+
+# Close pane.
+close_pane = "prefix+x"
+
+# Pane cycling.
+cycle_pane_next = "prefix+tab"
+cycle_pane_previous = "prefix+shift+tab"
+
+# Swap panes.
+swap_pane_left  = "prefix+shift+h"
+swap_pane_down  = "prefix+shift+j"
+swap_pane_up    = "prefix+shift+k"
+swap_pane_right = "prefix+shift+l"
+
+# Resize mode.
+resize_mode = "prefix+shift+r"
+
+# -------------------------------------------------------------------
+# Tabs ~= tmux windows
+# -------------------------------------------------------------------
+
+# New tab.
+new_tab = "prefix+c"
+
+# Previous / next.
+previous_tab = "prefix+p"
+next_tab = "prefix+n"
+
+# ` 1 ... ` 9
+switch_tab = "prefix+1..9"
+
+rename_tab = "prefix+,"
+close_tab = "prefix+&"
+
+# -------------------------------------------------------------------
+# Workspaces
+# -------------------------------------------------------------------
+
+workspace_picker = "prefix+w"
+new_workspace = "prefix+shift+n"
+rename_workspace = "prefix+shift+w"
+
+# -------------------------------------------------------------------
+# Copy / scrollback
+# -------------------------------------------------------------------
+
+copy_mode = "prefix+["
+edit_scrollback = "prefix+e"
+
+# -------------------------------------------------------------------
+# Session
+# -------------------------------------------------------------------
+
+# Equivalent-ish to tmux detach.
+detach = "prefix+d"
+
+# Keybinding help.
+help = "prefix+?"
+
+# -------------------------------------------------------------------
+# Navigate mode
+# -------------------------------------------------------------------
+#
+# Once Herdr's navigator is open, use vim keys.
+
+navigate_pane_left = "h"
+navigate_pane_down = "j"
+navigate_pane_up = "k"
+navigate_pane_right = "l"
+
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
+
+[ui]
+agent_panel_sort = "spaces"
