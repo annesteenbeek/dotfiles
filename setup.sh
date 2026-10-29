@@ -8,36 +8,39 @@ FILE_DIR="$DIR/files"
 LOCALES="en_US.UTF-8 nl_NL.UTF-8"
 
 # packages to be installed
-apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck bat"
+apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck bat pipx"
 brew_packages="tmux source-highlight vim htop xclip cmake shellcheck direnv herdr"
 pip_packages="ranger-fm Pygments"
 
+# Set Colors and print statemetns
 if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
-  NOCOLOR='\033[0m' RED='\033[0;31m' GREEN='\033[0;32m' ORANGE='\033[0;33m' BLUE='\033[0;34m' PURPLE='\033[0;35m' CYAN='\033[0;36m' YELLOW='\033[1;33m'
+  NO_COLOR='\033[0m' RED='\033[0;31m' GREEN='\033[0;32m' ORANGE='\033[0;33m' BLUE='\033[0;34m' PURPLE='\033[0;35m' CYAN='\033[0;36m' YELLOW='\033[1;33m'
 else
-  NOCOLOR='' RED='' GREEN='' ORANGE='' BLUE='' PURPLE='' CYAN='' YELLOW=''
+  NO_COLOR='' RED='' GREEN='' ORANGE='' BLUE='' PURPLE='' CYAN='' YELLOW=''
 fi
+function info () { echo -e "${GREEN}INFO: $1${NO_COLOR}";}
+function warn () { echo -e "${YELLOW}WARN: $1${NO_COLOR}";}
+function error () { echo -e "${RED}ERROR: $1${NO_COLOR}"; if [ "$2" != "false" ]; then exit 1;fi; }
 
-msg() {
-  echo >&2 -e "${1-}"
-}
-
+# Scripts
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   MACHINE="debian"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   MACHINE="osx"
 fi
-msg "${PURPLE}Machine type: $MACHINE${NOCOLOR}"
+UNAME=$(uname -m);
+info "Machine type: $MACHINE"
+info "Architecture: $UNAME"
 
 install_packages () {
     if [ "$MACHINE" == "debian" ]; then
-      msg "${GREEN}Installing packages: $apt_packages${NOCOLOR}"
+       info "Installing packages: ${PURPLE}$apt_packages"
       sudo apt-get update
       sudo apt install -y -q $apt_packages
     elif [ "$MACHINE" == "osx" ]; then 
       for formula in $brew_packages; do
         if brew ls --versions myformula > /dev/null; then
-          msg "${BLUE}Formula $formula is already installed.{NOCOLOR}"
+           info "Formula $formula is already installed."
         else
           brew install $formula
         fi
@@ -46,7 +49,7 @@ install_packages () {
 }
 
 place_dotfiles() {
-    msg "${GREEN}Linking dotfiles${NOCOLOR}"
+    info "Linking dotfiles"
     files="$(find $FILE_DIR -type f)"
     for source_path in $files; do
       file_path=${source_path#"$DIR/files/"} # use # to chop off beginning, % chop of end
@@ -60,7 +63,6 @@ place_dotfiles() {
           # Broken link
           rm "${dest}"
           ln -s "$source_path" "$dest"
-          msg "${GREEN}Linking $file_path ${NOCOLOR}"
         fi
       elif [ -e "${dest}" ]; then
         # Not a link
@@ -72,31 +74,35 @@ place_dotfiles() {
           mkdir -p $dir
         fi
         ln -s "$source_path" "$dest"
-        msg "${GREEN}Linking $file_path ${NOCOLOR}"
       fi
     done
 }
 
 install_lsd () {
   if [[ ! -x "$(command -v lsd)" ]]; then
-    UNAME=$(uname -m);
-    if [ "$MACHINE" == "debian" ] && [ "$UNAME" == "x86_64" ]; then
-      msg "${GREEN}Installing lsd${NOCOLOR}"
-      wget https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd_0.20.1_amd64.deb -O /tmp/lsd.deb
+    info "Installing LSD"
+    if [ "$MACHINE" == "debian" ]; then
+      if [ "$UNAME" == "x86_64" ]; then
+          wget https://github.com/lsd-rs/lsd/releases/download/v1.1.2/lsd-musl_1.1.2_amd64.deb -O /tmp/lsd.deb
+      elif [ "$UNAME" == "aarch64" ]; then
+          wget https://github.com/lsd-rs/lsd/releases/download/v1.1.2/lsd-musl_1.1.2_arm64.deb -O /tmp/lsd.deb
+      fi
       sudo dpkg -i /tmp/lsd.deb
     elif [ $MACHINE == "osx" ]; then
       brew install lsd
     fi
+  else
+      info "LSD already installed"
   fi
 }
 
 install_pip_packages () {
-  msg "${GREEN}Installing pip packages: $pip_packages${NOCOLOR}"
-  pip3 install $pip_packages
+  info "Installing pip packages: $pip_packages"
+  pipx install $pip_packages
 }
 
 install_vim_plugins () {
-  msg "${GREEN}Installing vim plugins${NOCOLOR}"
+  info "Installing VIM plugins"
   if [[ ! -f ~/.vim/autoload/plug.vim ]]; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -107,7 +113,7 @@ install_vim_plugins () {
 }
 
 install_ranger_plugins () {
-  msg "${GREEN}Installing ranger plugins${NOCOLOR}"
+  info "Installing ranger plugins"
   if [[ ! -d ~/.config/ranger/plugins/ranger_devicons ]]; then
     git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
   fi
@@ -115,22 +121,26 @@ install_ranger_plugins () {
 
 install_antigen () {
   if [ ! -f ~/.antigen/antigen.zsh ]; then
-    msg "${GREEN}Installing antigen${NOCOLOR}"
+    info "Installing antigen"
     mkdir ~/.antigen
     curl -L git.io/antigen > ~/.antigen/antigen.zsh
+  else 
+    info "Antigen already installed"
   fi
 }
 
 install_fzf () {
   if [ ! -d ~/.fzf ]; then
-      msg "${GREEN}Installing fzf${NOCOLOR}"
+      info "Installing FZF"
       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
       ~/.fzf/install --bin
+  else 
+    info "FZF already installed"
   fi
 }
 
 install_tmux_plugins () {
-  msg "${GREEN}Installing tmux plugins${NOCOLOR}"
+  info "Installing TMUX plugins"
   if [ ! -d  ~/.tmux/plugins/tpm ]; then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   fi
@@ -140,7 +150,7 @@ install_tmux_plugins () {
 set_zsh_default () {
   ZSH="$(which zsh)"
   if [[ "$(basename $SHELL)" != "$(basename $ZSH)" ]]; then
-    msg "${GREEN}Setting zsh as default shell${NOCOLOR}"
+    info "Setting zsh as default shell"
     sudo chsh -s "$(which zsh)" "$USER"
   fi
 }
@@ -158,26 +168,6 @@ install_pyenv () {
         #git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
     fi
 }
-
-# a_flag=''
-# b_flag=''
-# files=''
-# verbose='false'
-
-# print_usage() {
-#   printf "Usage: ..."
-# }
-
-# while getopts 'abf:v' flag; do
-#   case "${flag}" in
-#     a) a_flag='true' ;;
-#     b) b_flag='true' ;;
-#     f) files="${OPTARG}" ;;
-#     v) verbose='true' ;;
-#     *) print_usage
-#        exit 1 ;;
-#   esac
-# done
 
 #TODO: git settings
 #TODO: asdf?
