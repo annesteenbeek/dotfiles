@@ -144,6 +144,9 @@ install_tmux_plugins () {
   if [ ! -d  ~/.tmux/plugins/tpm ]; then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   fi
+  # tpm reads this from the tmux server's global environment (normally set by
+  # tpm itself when tmux.conf is loaded), so it must be set in tmux, not the shell
+  tmux start-server \; set-environment -g TMUX_PLUGIN_MANAGER_PATH ~/.tmux/plugins/
   bash ~/.tmux/plugins/tpm/scripts/install_plugins.sh
 }
 
