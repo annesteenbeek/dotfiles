@@ -8,7 +8,7 @@ FILE_DIR="$DIR/files"
 LOCALES="en_US.UTF-8 nl_NL.UTF-8"
 
 # packages to be installed
-apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck bat pipx"
+apt_packages="zsh tmux source-highlight vim python3-pip build-essential curl htop xclip direnv shellcheck bat pipx unzip"
 brew_packages="tmux source-highlight vim htop xclip cmake shellcheck direnv"
 pip_packages="ranger-fm Pygments"
 
@@ -172,10 +172,58 @@ install_pyenv () {
     fi
 }
 
+install_neovim () {
+  # Release builds: distro packages are too old for tinyvim (needs nvim 0.11+,
+  # and nvim-treesitter needs a newer tree-sitter CLI than Debian ships)
+  NVIM_VERSION="v0.12.6"
+  TS_VERSION="v0.27.1"
+  if [ "$MACHINE" == "debian" ]; then
+    if [ "$UNAME" == "x86_64" ]; then
+      nvim_tar="nvim-linux-x86_64"; nvim_sha="474430d53e6264f6d6dd18db42d6dc9df3a1b56ca9e88a325bbf860e1a811d87"
+      ts_gz="tree-sitter-linux-x64.gz"; ts_sha="d01042f94ba3d6827ddc9788e235f75d8366431be42bdf90ade534d960c98b7d"
+    elif [ "$UNAME" == "aarch64" ]; then
+      nvim_tar="nvim-linux-arm64"; nvim_sha="8f1f64a0bdb97247034038c3823c6cbad5bdf9ecd5751b85494b71c3ee04c815"
+      ts_gz="tree-sitter-linux-arm64.gz"; ts_sha="404be5d54a4955571c4067c21d4699660eab3a534cefb0659341b207f7139ec5"
+    fi
+    mkdir -p ~/.local/bin ~/.local/opt
+    if [[ "$(~/.local/bin/nvim --version 2>/dev/null | head -1)" != "NVIM $NVIM_VERSION" ]]; then
+      info "Installing neovim $NVIM_VERSION"
+      wget -q "https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/$nvim_tar.tar.gz" -O /tmp/nvim.tar.gz
+      echo "$nvim_sha  /tmp/nvim.tar.gz" | sha256sum -c --quiet
+      rm -rf ~/.local/opt/"$nvim_tar"
+      tar -C ~/.local/opt -xzf /tmp/nvim.tar.gz
+      ln -sfn ~/.local/opt/"$nvim_tar"/bin/nvim ~/.local/bin/nvim
+    else
+      info "Neovim $NVIM_VERSION already installed"
+    fi
+    if [[ "$(~/.local/bin/tree-sitter --version 2>/dev/null)" != "tree-sitter ${TS_VERSION#v}"* ]]; then
+      info "Installing tree-sitter $TS_VERSION"
+      wget -q "https://github.com/tree-sitter/tree-sitter/releases/download/$TS_VERSION/$ts_gz" -O /tmp/tree-sitter.gz
+      echo "$ts_sha  /tmp/tree-sitter.gz" | sha256sum -c --quiet
+      gunzip -c /tmp/tree-sitter.gz > /tmp/tree-sitter
+      install -m 755 /tmp/tree-sitter ~/.local/bin/tree-sitter
+    fi
+  elif [ "$MACHINE" == "osx" ]; then
+    brew install neovim tree-sitter-cli
+  fi
+}
+
+install_neovim_plugins () {
+  info "Installing neovim plugins"
+  NVIM="$(command -v nvim || echo ~/.local/bin/nvim)"
+  # restore = the plugin versions pinned in lazy-lock.json
+  PATH=~/.local/bin:$PATH "$NVIM" --headless "+Lazy! restore" +qa
+  PATH=~/.local/bin:$PATH "$NVIM" --headless \
+    -c 'lua require("nvim-treesitter").install({ "lua", "luadoc", "printf", "vim", "vimdoc" }):wait(300000)' -c qa
+  # MasonInstallAll reinstalls everything, so only run it once
+  if [[ ! -d ~/.local/share/nvim/mason/bin ]]; then
+    PATH=~/.local/bin:$PATH "$NVIM" --headless -c MasonInstallAll -c qa
+  fi
+}
+
 #TODO: git settings
 #TODO: asdf?
 #TODO: nvm
-#TODO: neovim (config init, plugin install)
 
 set_locale
 install_packages
@@ -185,6 +233,8 @@ place_dotfiles
 install_antigen
 install_fzf
 install_vim_plugins
+install_neovim
+install_neovim_plugins
 install_tmux_plugins
 install_ranger_plugins
 install_lsd
