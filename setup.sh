@@ -227,7 +227,7 @@ install_neovim_plugins () {
 
 set_locale
 install_packages
-install_pip_packages
+# install_pip_packages
 install_pyenv
 place_dotfiles
 install_antigen
