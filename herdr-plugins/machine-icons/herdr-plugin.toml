@@ -1,0 +1,24 @@
+# Adds a Nerd Font server icon to every saved SSH machine's label in the
+# sidebar. Herdr keeps machine labels in per-computer state, not config.toml,
+# so this re-applies them on each computer.
+#
+# Installed by setup.sh with `herdr plugin link`.
+
+id = "machine-icons"
+name = "Machine icons"
+version = "0.1.0"
+description = "Prefix saved SSH machine labels with a server icon"
+min_herdr_version = "0.9.0"
+platforms = ["macos", "linux"]
+
+# Herdr has no "machine added" event, so run at startup...
+[[startup]]
+command = ["sh", "machine-icons.sh"]
+
+# ...and on demand after adding a machine.
+[[actions]]
+id = "apply"
+title = "Machine icons: apply"
+description = "Add the server icon to SSH machines that don't have it yet"
+contexts = ["global"]
+command = ["sh", "machine-icons.sh"]

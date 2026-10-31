@@ -254,6 +254,17 @@ install_herdr_plugins () {
       "$HERDR" plugin install --yes --ref "$ref" "$repo" || warn "Failed to install herdr plugin $repo"
     fi
   done
+
+  # Local plugins that live in this repo
+  for plugin_dir in "$DIR"/herdr-plugins/*/; do
+    plugin_dir="${plugin_dir%/}"
+    if grep -q "local:$plugin_dir\]" <<< "$installed"; then
+      info "herdr plugin $(basename "$plugin_dir") already linked"
+    else
+      info "Linking herdr plugin $(basename "$plugin_dir")"
+      "$HERDR" plugin link "$plugin_dir" > /dev/null || warn "Failed to link herdr plugin $plugin_dir"
+    fi
+  done
 }
 
 #TODO: git settings
