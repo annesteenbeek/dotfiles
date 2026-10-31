@@ -39,7 +39,7 @@ install_packages () {
       sudo apt install -y -q $apt_packages
     elif [ "$MACHINE" == "osx" ]; then 
       for formula in $brew_packages; do
-        if brew ls --versions myformula > /dev/null; then
+        if brew ls --versions "$formula" > /dev/null; then
            info "Formula $formula is already installed."
         else
           brew install $formula
@@ -221,6 +221,41 @@ install_neovim_plugins () {
   fi
 }
 
+install_herdr () {
+  # macOS gets herdr from brew_packages; Linux uses the official installer.
+  if [ "$MACHINE" == "debian" ] && [[ ! -x "$(command -v herdr)" ]]; then
+    info "Installing herdr"
+    curl -fsSL https://herdr.dev/install.sh | sh
+  fi
+}
+
+# Plugins pinned to the commits that were reviewed. To upgrade one, review the
+# new code first, then bump its commit here.
+herdr_plugins=(
+  "jeffarese/herdr-bar@a88c7b06c7a0f354d6120d465b0caa56fbde3fbf"
+  "alexarthurs/herdr-sidebar/plugins/herdr-sidebar@081ed133f3faa377438b51ce435fe8a87c439593"
+  "FlorisKr/herdr-openspec@240a28e937283214e5317a0e89fbb714bae88629"
+)
+
+install_herdr_plugins () {
+  HERDR="$(command -v herdr || echo ~/.local/bin/herdr)"
+  if [[ ! -x "$HERDR" ]]; then
+    warn "herdr not found, skipping herdr plugins"
+    return
+  fi
+  installed="$("$HERDR" plugin list 2>/dev/null || true)"
+  for plugin in "${herdr_plugins[@]}"; do
+    repo="${plugin%@*}"
+    ref="${plugin#*@}"
+    if grep -q "github:$repo@$ref" <<< "$installed"; then
+      info "herdr plugin $repo already installed"
+    else
+      info "Installing herdr plugin $repo"
+      "$HERDR" plugin install --yes --ref "$ref" "$repo" || warn "Failed to install herdr plugin $repo"
+    fi
+  done
+}
+
 #TODO: git settings
 #TODO: asdf?
 #TODO: nvm
@@ -238,5 +273,7 @@ install_neovim_plugins
 install_tmux_plugins
 install_ranger_plugins
 install_lsd
+install_herdr
+install_herdr_plugins
 install_pyenv
 set_zsh_default

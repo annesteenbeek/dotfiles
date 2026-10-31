@@ -37,7 +37,7 @@ focus_pane_up    = "prefix+k"
 focus_pane_right = "prefix+l"
 
 # Similar to tmux last-pane.
-last_pane = "prefix+backtick"
+last_pane = "prefix+semicolon"
 
 # Zoom pane.
 zoom = "prefix+z"
@@ -105,14 +105,86 @@ help = "prefix+?"
 # -------------------------------------------------------------------
 #
 # Once Herdr's navigator is open, use vim keys.
+# j/k move between workspaces; shift+j/k move between panes (one key can't do both).
 
 navigate_pane_left = "h"
-navigate_pane_down = "j"
-navigate_pane_up = "k"
+navigate_pane_down = "shift+j"
+navigate_pane_up = "shift+k"
 navigate_pane_right = "l"
 
 navigate_workspace_up = "k"
 navigate_workspace_down = "j"
 
+# -------------------------------------------------------------------
+# Plugins (installed with `herdr plugin install`)
+# -------------------------------------------------------------------
+
+# herdr-bar: fuzzy jump to any tab, pane or agent.  ` space
+[[keys.command]]
+key = "prefix+space"
+type = "plugin_action"
+command = "herdr-bar.open"
+description = "command bar"
+
+# herdr-sidebar: VS Code-style file explorer + source control.  ` b
+[[keys.command]]
+key = "prefix+b"
+type = "plugin_action"
+command = "herdr-sidebar.open-sidebar"
+description = "toggle file/git sidebar"
+
+# openspec: browse OpenSpec changes for this workspace's project.  ` t
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "openspec.openspec-browse"
+description = "OpenSpec browser"
+
 [ui]
 agent_panel_sort = "spaces"
+
+# Label split-pane borders with the agent name when no manual pane name is set.
+show_agent_labels_on_pane_borders = true
+
+# Outer terminal/window title: workspace plus what the focused agent is doing.
+window_title = "{workspace} · {terminal_title}"
+
+status_indicators = "symbols"
+
+# -------------------------------------------------------------------
+# Sidebar: agent rows
+# -------------------------------------------------------------------
+#
+# Row 1: status, machine, workspace.
+# Row 2: the agent's own task title (Claude Code sets this, e.g. "Proxmox
+#        migration plan") instead of the generic "claude".
+#
+# Machine labels carry a Nerd Font glyph (set with `herdr machine rename`)
+# and get a colour per host so remote agents stand out. Local is dimmed.
+# Colours are tokyo night: red = server, blue = dev.
+
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", { token = "machine", rules = [
+    { contains = "server", fg = "#f7768e", bold = true },
+    { contains = "dev", fg = "#7aa2f7", bold = true },
+    { equals = "Local", ignore_case = true, dim = true },
+  ] }, "workspace"],
+  [{ token = "terminal_title_stripped", bold = true }],
+  [{ token = "agent", dim = true }],
+]
+
+[ui.sidebar.agents.rows_by_agent]
+# For Claude the task title says enough; drop the "claude" row.
+claude = [
+  ["state_icon", { token = "machine", rules = [
+    { contains = "server", fg = "#f7768e", bold = true },
+    { contains = "dev", fg = "#7aa2f7", bold = true },
+    { equals = "Local", ignore_case = true, dim = true },
+  ] }, "workspace"],
+  [{ token = "terminal_title_stripped", bold = true }],
+]
+
+[theme]
+name = "tokyo-night"
+auto_switch = false
